@@ -559,7 +559,7 @@ export const serverDB = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: email.trim(), password, returnSecureToken: true }),
     });
-    const data: { idToken?: unknown; localId?: unknown } = await response.json().catch(() => ({}));
+    const data = (await response.json().catch(() => ({}))) as { idToken?: unknown; localId?: unknown };
     if (!response.ok || typeof data.idToken !== "string" || typeof data.localId !== "string") {
       return null;
     }

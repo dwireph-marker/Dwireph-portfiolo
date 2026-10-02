@@ -63,6 +63,6 @@
     "firebase-tools": "^14.19.0"
   },
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   }
 }
