@@ -17,7 +17,7 @@ const CMSContext = createContext<CMSContextType | null>(null);
 const DatabaseError = () => (
   <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", background: "#050308", color: "white", fontFamily: "system-ui, sans-serif" }}>
     <div style={{ textAlign: "center", padding: "2rem" }}>
-      <h1 style={{ margin: 0, fontSize: "2rem" }}>database error</h1>
+      <h1 style={{ margin: 0, fontSize: "2rem" }}>Unable to load website data</h1>
     </div>
   </div>
 );
@@ -38,7 +38,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         cmsApi.getContent(),
         cmsApi.getProjects(false),
       ]);
-      if (!fetchedSettings || !fetchedContent || !Array.isArray(fetchedProjects)) throw new Error("database error");
+      if (!fetchedSettings || !fetchedContent || !Array.isArray(fetchedProjects)) throw new Error("Unable to load website data. Please try again in a moment.");
       setSettings(fetchedSettings);
       setContent(fetchedContent);
       setProjects(fetchedProjects);

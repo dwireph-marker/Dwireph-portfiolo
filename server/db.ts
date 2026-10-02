@@ -193,30 +193,37 @@ export async function migrateAllDataToFirebase() {
 
 async function initializeFirestore() {
   const firestore = getFirebaseDb();
-  const [seed, meta, settingsDoc, contentDoc] = await Promise.all([
-    readSeed(),
+
+  // IMPORTANT for Vercel/serverless deployments: an existing production database
+  // must never depend on a local seed file being present inside the function bundle.
+  // Firestore is the runtime source of truth. We only read the seed file when the
+  // core CMS documents are genuinely missing (for a brand-new project).
+  const [meta, settingsDoc, contentDoc] = await Promise.all([
     firestore.collection("cms").doc("meta").get(),
     firestore.collection("cms").doc("settings").get(),
     firestore.collection("cms").doc("content").get(),
   ]);
 
   const needsCoreSeed = !meta.exists || !settingsDoc.exists || !contentDoc.exists;
+
   if (needsCoreSeed) {
-    await withTimeout(persistSeed(seed), 60_000, "Firestore seed upload");
+    const seed = await readSeed();
+    await withTimeout(persistSeed(seed), 60_000, "Firestore initial seed upload");
     await withTimeout(initializeAdmin(), 15_000, "Firebase admin initialization");
     await firestore.collection("cms").doc("meta").set({
       version: seed.version,
       lastUpdated: new Date().toISOString(),
       initializedAt: meta.exists ? undefined : new Date().toISOString(),
-      repairedAt: meta.exists ? new Date().toISOString() : undefined,
       initializedFrom: "data/seed-data.json",
     }, { merge: true });
-  } else {
-    // Existing runtime data is authoritative. Do not reconcile or reseed documents
-    // during startup; admin/content changes must only happen through the app.
-    await withTimeout(initializeAdmin(), 15_000, "Firebase admin initialization");
+    return;
   }
 
+  // Existing runtime data is authoritative. Do not reconcile, reseed, or overwrite
+  // production content during startup. This path requires no local seed file, which
+  // makes it safe for Vercel Functions where source-data files are not guaranteed to
+  // be included in the deployed function bundle.
+  await withTimeout(initializeAdmin(), 15_000, "Firebase admin initialization");
 }
 
 let readyPromise: Promise<void> | null = null;

@@ -7,7 +7,21 @@ let firestore: Firestore | null = null;
 let auth: Auth | null = null;
 
 function getCredential() {
-  return cert(JSON.parse(FIREBASE_SERVICE_ACCOUNT_JSON));
+  try {
+    const raw = JSON.parse(FIREBASE_SERVICE_ACCOUNT_JSON) as {
+      project_id?: string;
+      client_email?: string;
+      private_key?: string;
+      [key: string]: unknown;
+    };
+    if (!raw.project_id || !raw.client_email || !raw.private_key) {
+      throw new Error("Firebase service-account JSON is missing project_id, client_email, or private_key.");
+    }
+    raw.private_key = String(raw.private_key).replace(/\\n/g, "\n");
+    return cert(raw as Parameters<typeof cert>[0]);
+  } catch (error) {
+    throw new Error(`Firebase Admin credentials are invalid: ${error instanceof Error ? error.message : "invalid service-account configuration"}`);
+  }
 }
 
 export function getFirebaseDb(): Firestore {

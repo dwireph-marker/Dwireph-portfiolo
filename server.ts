@@ -378,8 +378,9 @@ app.get("/api/auth/me", async (req, res) => {
     const session = await serverDB.verifySession(token);
     if (!session?.firebaseUid) return res.json({ authenticated: false });
     return res.json({ authenticated: true, user: await serverDB.getAdminProfile(session.firebaseUid) });
-  } catch {
-    return res.status(500).json({ authenticated: false, error: "database error" });
+  } catch (error) {
+    console.error("[AUTH] /api/auth/me failed:", error instanceof Error ? error.stack || error.message : error);
+    return res.status(503).json({ authenticated: false, error: "Authentication service temporarily unavailable." });
   }
 });
 app.post("/api/auth/logout", async (req, res) => {
@@ -421,8 +422,9 @@ app.get("/api/settings", async (_req, res) => {
   try {
     const settings = await serverDB.getSettings();
     res.json({ success: true, settings });
-  } catch {
-    res.status(500).json({ success: false, error: "Failed to fetch settings" });
+  } catch (error) {
+    console.error("[CMS] Failed to fetch settings:", error instanceof Error ? error.stack || error.message : error);
+    res.status(503).json({ success: false, error: "Database temporarily unavailable." });
   }
 });
 app.put("/api/settings", requireAuth, async (req, res) => {
@@ -443,8 +445,9 @@ app.get("/api/content", async (_req, res) => {
   try {
     const content = await serverDB.getContent();
     res.json({ success: true, content });
-  } catch {
-    res.status(500).json({ success: false, error: "Failed to fetch content" });
+  } catch (error) {
+    console.error("[CMS] Failed to fetch content:", error instanceof Error ? error.stack || error.message : error);
+    res.status(503).json({ success: false, error: "Database temporarily unavailable." });
   }
 });
 app.put("/api/content", requireAuth, async (req, res) => {

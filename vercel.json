@@ -2,6 +2,13 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist",
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": [
+        "data/seed-data.json"
+      ]
+    }
+  },
   "rewrites": [
     {
       "source": "/api/:path*",
