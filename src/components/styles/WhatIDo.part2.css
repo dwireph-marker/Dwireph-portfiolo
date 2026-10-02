@@ -1,0 +1,128 @@
+
+@media only screen and (max-width: 1400px) {
+  .what-box h2 {
+    margin-right: 20%;
+  }
+  .what-box-in {
+    height: 580px;
+  }
+  .what-content h3 {
+    font-size: 28px;
+  }
+  .what-content {
+    padding: 30px;
+    width: 400px;
+  }
+  .what-content p {
+    font-size: 13px;
+  }
+  .what-noTouch:hover,
+  .what-content-active {
+    padding: 20px 30px;
+  }
+
+  .what-noTouch:hover ~ .what-content,
+  .what-box-in:hover .what-noTouch:not(:hover),
+  .what-content.what-sibling {
+    padding: 10px 30px;
+  }
+  .what-tags {
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 1400px) {
+  .what-box-in {
+    margin-left: 50px;
+  }
+  .what-content {
+    width: 380px;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .whatIDO {
+    height: auto;
+    flex-direction: column;
+    padding: 80px 16px;
+    place-items: inherit;
+    align-items: center;
+    justify-content: center;
+    z-index: 11;
+  }
+  .what-box {
+    width: 100% !important;
+    max-width: 600px !important;
+    margin: 0 auto;
+    justify-content: center;
+  }
+  .what-box h2 {
+    font-size: 38px;
+    line-height: 38px;
+    margin: 0 0 30px 0;
+    text-align: center;
+  }
+  .what-box-in {
+    height: auto !important;
+    margin-left: 0 !important;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    opacity: 1 !important;
+  }
+  .what-content {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    padding: 32px 24px !important;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+  }
+  .what-content h3 {
+    font-size: 24px !important;
+    margin-bottom: 12px !important;
+  }
+  .what-content-in {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .what-content h5,
+  .what-content-flex {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  .what-content p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 20px !important;
+  }
+  .what-tags {
+    font-size: 12px !important;
+    padding: 4px 10px !important;
+  }
+  .what-arrow {
+    display: none !important;
+  }
+  .what-border1,
+  .what-border2,
+  .what-corner {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 380px) {
+  .what-box h2 {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  .what-content h3 {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (min-width: 1950px) {
+  .what-box h2 {
+    font-size: 7rem;
+    line-height: 6.8rem;
+  }
+}

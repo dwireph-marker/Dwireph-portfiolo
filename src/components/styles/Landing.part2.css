@@ -1,0 +1,255 @@
+
+
+/* Scroll Down Mouse Indicator */
+.scroll-down-wrapper {
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 20;
+  transition: opacity 0.2s;
+}
+
+.scroll-down-wrapper:hover {
+  opacity: 0.85;
+}
+
+.scroll-text {
+  font-size: 9px;
+  font-weight: 800;
+  color: #7c66a8;
+  letter-spacing: 2px;
+}
+
+.scroll-mouse {
+  width: 18px;
+  height: 28px;
+  border: 1.5px solid #7c66a8;
+  border-radius: 9999px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-wheel {
+  width: 3px;
+  height: 6px;
+  background-color: #C50337;
+  border-radius: 9999px;
+  position: absolute;
+  top: 5px;
+  animation: scroll-slide 1.6s ease-in-out infinite;
+}
+
+@keyframes scroll-slide {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(6px); opacity: 0.4; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* AWS Staging Badge Bottom Right */
+.aws-staging-badge-wrapper {
+  position: absolute;
+  right: 4%;
+  bottom: 3%;
+  z-index: 20;
+}
+
+.aws-staging-badge {
+  background: rgba(14, 18, 36, 0.7);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #60a5fa;
+  letter-spacing: 0.8px;
+}
+
+.aws-cloud-icon {
+  color: #60a5fa;
+  animation: cloud-pulse 3s ease-in-out infinite;
+}
+
+@keyframes cloud-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Responsive Scaling text */
+@media (max-width: 1200px) {
+  .hero-text {
+    font-size: 58px;
+  }
+  .welcome-badge-wrapper {
+    top: 18%;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-text {
+    font-size: 48px;
+  }
+  .typing-prompt, .typing-text, .typing-cursor {
+    font-size: 13px;
+  }
+}
+
+/* Tablet and Mobile Breakpoint (<= 1024px) */
+/* The Hero section is an immersive full viewport section on mobile with smooth transition to About */
+@media (max-width: 1024px) {
+  .landing-section {
+    width: 100%;
+    min-height: 100svh;
+    min-height: 100vh;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--backgroundColor);
+    padding: calc(60px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)) 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+  }
+
+  .landing-container {
+    width: 100%;
+    max-width: 440px;
+    min-height: calc(100svh - 84px);
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .welcome-badge-wrapper {
+    position: static;
+    transform: none;
+    margin: 0 auto 10px auto;
+    z-index: 20;
+  }
+
+  .welcome-badge {
+    padding: 6px 14px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .landing-hero-titles {
+    position: relative;
+    margin: 0 auto 12px auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 20;
+  }
+
+  .hero-text {
+    font-size: clamp(26px, 7vw, 40px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 0 0 8px 0;
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .typing-container {
+    height: 32px;
+    min-height: 32px;
+    max-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px auto 14px auto;
+    padding: 4px 14px;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .typing-prompt,
+  .typing-text,
+  .typing-cursor {
+    font-size: 12px;
+  }
+
+  .landing-actions-container {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    padding: 0 12px;
+    box-sizing: border-box;
+    z-index: 20;
+  }
+
+  .action-btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    box-sizing: border-box;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .scroll-down-wrapper {
+    position: static;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top: auto;
+    padding-top: 18px;
+    padding-bottom: 4px;
+    cursor: pointer;
+    z-index: 20;
+  }
+
+  .scroll-text {
+    font-size: 8.5px;
+    letter-spacing: 1.5px;
+  }
+
+  .scroll-mouse {
+    width: 14px;
+    height: 22px;
+  }
+
+  .scroll-wheel {
+    width: 2px;
+    height: 5px;
+  }
+
+  .gemini-badge-container,
+  .aws-staging-badge-wrapper {
+    display: none !important;
+  }
+}

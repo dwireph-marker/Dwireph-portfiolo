@@ -1,0 +1,84 @@
+
+
+/* Designer Credit */
+.contact-designer-credit h2 {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.4;
+  margin: 0 0 8px 0;
+  color: #beb6d4;
+}
+
+.contact-designer-credit h2 > span {
+  color: var(--accentColor);
+  font-weight: 500;
+}
+
+.copyright-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: rgba(138, 129, 163, 0.6);
+}
+
+/* Responsive Breakpoints */
+@media only screen and (max-width: 1300px) {
+  .contact-section h3.section-title {
+    font-size: 50px;
+  }
+  .contact-flex-layout {
+    gap: 40px;
+  }
+  .direct-channel-link {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .contact-flex-layout {
+    flex-direction: column;
+    gap: 50px;
+  }
+  .contact-form-wrapper,
+  .contact-info-wrapper {
+    flex: none;
+    width: 100%;
+  }
+  .contact-info-wrapper {
+    min-height: auto;
+    gap: 40px;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .contact-section {
+    margin-top: 50px;
+    padding-bottom: 60px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .contact-section h3.section-title {
+    font-size: 38px;
+    margin-bottom: 24px;
+  }
+  .contact-card-glass {
+    padding: 20px;
+    border-radius: 16px;
+  }
+  .social-links-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .contact-section h3.section-title {
+    font-size: 32px;
+  }
+  .form-header-title {
+    font-size: 20px;
+  }
+  .direct-channel-link {
+    font-size: 15px;
+  }
+}

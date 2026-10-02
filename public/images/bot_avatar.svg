@@ -1,0 +1,311 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="100%" height="100%">
+  <defs>
+    <!-- ================= 3D VOLUMETRIC GRADIENTS ================= -->
+    <!-- Rich Teal Spherical 3D gradient for Head, Body, Limbs -->
+    <radialGradient id="tealBody3D" cx="32%" cy="28%" r="72%" fx="28%" fy="22%">
+      <stop offset="0%" stop-color="#1fe5f5" />
+      <stop offset="8%" stop-color="#12a8b5" />
+      <stop offset="38%" stop-color="#075e66" />
+      <stop offset="75%" stop-color="#033036" />
+      <stop offset="100%" stop-color="#01161a" />
+    </radialGradient>
+
+    <!-- Deep Teal Linear Gradient for cylindrical limbs and fabric folds -->
+    <linearGradient id="tealCylinder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10a6b5" />
+      <stop offset="30%" stop-color="#065b63" />
+      <stop offset="75%" stop-color="#023036" />
+      <stop offset="100%" stop-color="#001214" />
+    </linearGradient>
+
+    <!-- Soft Fabric Top Highlight Gradient -->
+    <linearGradient id="fabricHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Deep Ambient Occlusion / Shadow Gradient for cavities -->
+    <radialGradient id="innerHoodVoid" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000405" />
+      <stop offset="75%" stop-color="#010f12" />
+      <stop offset="100%" stop-color="#05272e" />
+    </radialGradient>
+
+    <!-- Metallic Steel Joint / Claw 3D sphere gradient -->
+    <radialGradient id="metalJoint3D" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#737e8c" />
+      <stop offset="40%" stop-color="#3b424d" />
+      <stop offset="85%" stop-color="#14171c" />
+      <stop offset="100%" stop-color="#07080a" />
+    </radialGradient>
+
+    <!-- 3D Visor Convex Dark Glass Screen -->
+    <radialGradient id="visorGlass3D" cx="45%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#2a333f" />
+      <stop offset="45%" stop-color="#0f1318" />
+      <stop offset="85%" stop-color="#030405" />
+      <stop offset="100%" stop-color="#000000" />
+    </radialGradient>
+
+    <!-- Visor Rim Highlights & Reflections -->
+    <linearGradient id="glassSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4" />
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.1" />
+      <stop offset="70%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Sneaker White Rubber Sole 3D Gradient -->
+    <linearGradient id="sole3D" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="60%" stop-color="#e1e8ea" />
+      <stop offset="100%" stop-color="#abb6b8" />
+    </linearGradient>
+
+    <!-- ================= GLOWS & SPECIAL FILTERS ================= -->
+    <!-- Super Intense 3D Neon Pink Eye Glow -->
+    <filter id="intenseNeonPink" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="3" result="blur1" />
+      <feGaussianBlur stdDeviation="8" result="blur2" />
+      <feGaussianBlur stdDeviation="22" result="blur3" />
+      <feGaussianBlur stdDeviation="45" result="blur4" />
+      <feMerge>
+        <feMergeNode in="blur4" />
+        <feMergeNode in="blur3" />
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Cyan/Teal Indicator Lights Glow -->
+    <filter id="cyanGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur1" />
+      <feGaussianBlur stdDeviation="12" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Smooth Depth Shadow Filter for layers -->
+    <filter id="depthShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+
+    <!-- Ground Ambient Occlusion Gradient -->
+    <radialGradient id="groundShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.75)" />
+      <stop offset="50%" stop-color="rgba(0,0,0,0.35)" />
+      <stop offset="85%" stop-color="rgba(0,0,0,0.1)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+    </radialGradient>
+  </defs>
+
+  <!-- ================= GROUND SHADOW ================= -->
+  <ellipse cx="200" cy="552" rx="115" ry="18" fill="url(#groundShadow)" />
+
+  <!-- ================= MAIN CHARACTER GROUP ================= -->
+  <g>
+    <!-- ================= 1. SNEAKERS & FEET ================= -->
+    <!-- Left Sneaker Group -->
+    <g filter="url(#depthShadow)">
+      <!-- Sneaker main upper body -->
+      <path d="M 112,504 C 112,474 145,470 178,470 C 196,470 206,485 206,504 L 204,538 C 204,545 185,549 155,549 C 120,549 112,544 112,538 Z" fill="url(#tealBody3D)" />
+      <!-- Soft shoe creases / folds -->
+      <path d="M 118,522 Q 138,510 162,510" fill="none" stroke="#042a2f" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+      <path d="M 124,530 Q 140,518 158,520" fill="none" stroke="#042a2f" stroke-width="2" stroke-linecap="round" opacity="0.5" />
+      <!-- Thick 3D White Rubber Sole -->
+      <path d="M 110,528 C 110,522 118,518 155,518 C 192,518 206,522 206,528 L 204,544 C 204,550 185,553 155,553 C 120,553 110,550 110,544 Z" fill="url(#sole3D)" />
+      <!-- Sole Bottom Black Grip Rim -->
+      <path d="M 110,542 C 110,544 120,546 155,546 C 190,546 204,544 204,542 L 204,545 C 204,551 185,554 155,554 C 120,554 110,551 110,545 Z" fill="#2d3536" />
+      <!-- Laces / Details -->
+      <path d="M 132,492 L 168,496" stroke="#01161a" stroke-width="5" stroke-linecap="round" />
+      <path d="M 136,504 L 171,508" stroke="#01161a" stroke-width="4.5" stroke-linecap="round" />
+      <!-- Sneaker toe cap specular highlight -->
+      <path d="M 115,530 C 120,512 145,510 158,510" fill="none" stroke="url(#fabricHighlight)" stroke-width="2.5" stroke-linecap="round" opacity="0.7" />
+    </g>
+
+    <!-- Right Sneaker Group -->
+    <g filter="url(#depthShadow)">
+      <!-- Sneaker main upper body -->
+      <path d="M 194,504 C 194,485 204,470 222,470 C 255,470 288,474 288,504 L 288,538 C 288,544 280,549 245,549 C 215,549 194,545 194,538 Z" fill="url(#tealBody3D)" />
+      <!-- Soft shoe creases / folds -->
+      <path d="M 282,522 Q 262,510 238,510" fill="none" stroke="#042a2f" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+      <path d="M 276,530 Q 260,518 242,520" fill="none" stroke="#042a2f" stroke-width="2" stroke-linecap="round" opacity="0.5" />
+      <!-- Thick 3D White Rubber Sole -->
+      <path d="M 194,528 C 194,522 208,518 245,518 C 282,518 290,522 290,528 L 290,544 C 290,550 282,553 245,553 C 208,553 194,550 194,544 Z" fill="url(#sole3D)" />
+      <!-- Sole Bottom Black Grip Rim -->
+      <path d="M 194,542 C 194,544 208,546 245,546 C 282,546 290,542 290,542 L 290,545 C 290,551 282,554 245,554 C 208,554 194,551 194,545 Z" fill="#2d3536" />
+      <!-- Laces / Details -->
+      <path d="M 232,496 L 268,492" stroke="#01161a" stroke-width="5" stroke-linecap="round" />
+      <path d="M 229,508 L 264,504" stroke="#01161a" stroke-width="4.5" stroke-linecap="round" />
+      <!-- Sneaker toe cap highlight -->
+      <path d="M 285,530 C 280,512 255,510 242,510" fill="none" stroke="url(#fabricHighlight)" stroke-width="2.5" stroke-linecap="round" opacity="0.7" />
+    </g>
+
+
+    <!-- ================= 2. PANTS & LEGS (Rounded 3D cylinders with fabric folds) ================= -->
+    <!-- Left Leg -->
+    <g>
+      <path d="M 132,408 L 195,408 L 195,490 L 126,485 Z" fill="url(#tealBody3D)" />
+      <!-- Shading and highlights for 3D depth -->
+      <path d="M 130,410 L 125,482" stroke="url(#fabricHighlight)" stroke-width="6" fill="none" opacity="0.25" />
+      <path d="M 195,410 L 195,490" stroke="#01161a" stroke-width="8" fill="none" opacity="0.45" />
+      <!-- Thick circular leg cuff -->
+      <rect x="122" y="476" width="76" height="18" rx="9" fill="#042a2f" />
+      <rect x="122" y="476" width="76" height="6" rx="3" fill="url(#fabricHighlight)" opacity="0.3" />
+    </g>
+
+    <!-- Right Leg -->
+    <g>
+      <path d="M 205,408 L 268,408 L 274,485 L 205,490 Z" fill="url(#tealBody3D)" />
+      <!-- Shading and highlights for 3D depth -->
+      <path d="M 205,410 L 205,490" stroke="url(#fabricHighlight)" stroke-width="6" fill="none" opacity="0.15" />
+      <path d="M 268,410 L 272,482" stroke="#01161a" stroke-width="8" fill="none" opacity="0.5" />
+      <!-- Thick circular leg cuff -->
+      <rect x="202" y="476" width="76" height="18" rx="9" fill="#042a2f" />
+      <rect x="202" y="476" width="76" height="6" rx="3" fill="url(#fabricHighlight)" opacity="0.3" />
+    </g>
+
+
+    <!-- ================= 3. HOODIE BODY / TORSO (Thick 3D egg shape) ================= -->
+    <g filter="url(#depthShadow)">
+      <path d="M 96,295 C 96,265 128,255 200,255 C 272,255 304,265 304,295 L 292,412 C 292,422 272,428 200,428 C 128,428 108,422 108,412 Z" fill="url(#tealBody3D)" />
+      
+      <!-- Volumetric curvature shade lines -->
+      <path d="M 102,305 C 102,275 125,265 190,262" stroke="url(#fabricHighlight)" stroke-width="14" fill="none" opacity="0.25" />
+      <path d="M 298,305 C 298,275 275,265 210,262" stroke="#01161a" stroke-width="16" fill="none" opacity="0.45" />
+
+      <!-- Thick 3D Rounded Waistband -->
+      <rect x="105" y="408" width="190" height="26" rx="13" fill="#03252a" />
+      <rect x="105" y="408" width="190" height="8" rx="4" fill="url(#fabricHighlight)" opacity="0.35" />
+      <!-- Bottom shade of waistband -->
+      <rect x="105" y="424" width="190" height="10" rx="5" fill="#000e10" opacity="0.5" />
+
+      <!-- Kangaroo Pocket with 3D Depth & Emboss -->
+      <path d="M 132,348 L 268,348 C 278,386 268,406 255,406 L 145,406 C 132,406 122,386 132,348 Z" fill="#021c20" stroke="#0f6470" stroke-width="2.5" />
+      <!-- Pocket inner shadow -->
+      <path d="M 132,348 L 268,348 C 260,358 140,358 132,348 Z" fill="#000a0b" />
+      <!-- Stitch details on pocket openings -->
+      <path d="M 152,348 L 135,376" stroke="#12a8b5" stroke-width="3.5" stroke-linecap="round" />
+      <path d="M 248,348 L 265,376" stroke="#12a8b5" stroke-width="3.5" stroke-linecap="round" />
+      <!-- Pocket front face highlight -->
+      <path d="M 148,400 L 252,400" stroke="url(#fabricHighlight)" stroke-width="2.5" stroke-linecap="round" opacity="0.3" />
+    </g>
+
+
+    <!-- ================= 4. SLEEVES & ARMS (With realistic 3D volume & shadows) ================= -->
+    <!-- Left Arm (Resting elegantly with nice fold highlights) -->
+    <g filter="url(#depthShadow)">
+      <path d="M 115,270 C 88,285 64,315 74,370 C 79,400 108,395 108,375 L 115,295 Z" fill="url(#tealBody3D)" />
+      <!-- Left Sleeve Cuff -->
+      <g transform="rotate(-18, 88, 378)">
+        <rect x="72" y="368" width="36" height="18" rx="9" fill="#03252a" />
+        <rect x="72" y="368" width="36" height="6" rx="3" fill="url(#fabricHighlight)" opacity="0.3" />
+      </g>
+    </g>
+    <!-- Left Hand / Spherical Robot Joint (Glossy Steel) -->
+    <circle cx="80" cy="408" r="9.5" fill="url(#metalJoint3D)" filter="url(#depthShadow)" />
+    <!-- 3D Joint highlight -->
+    <circle cx="77" cy="405" r="3.5" fill="#ffffff" opacity="0.25" />
+    <!-- 3D Claw fingers -->
+    <path d="M 72,406 C 68,414 68,424 76,430 C 84,436 90,428 88,418 Z" fill="url(#metalJoint3D)" stroke="#040608" stroke-width="1.5" />
+    <circle cx="71" cy="416" r="4.5" fill="#0b0e12" />
+    <circle cx="78" cy="422" r="4.5" fill="#0b0e12" />
+
+    <!-- Right Arm (Raised in a friendly waving/greeting gesture, with enhanced 3D modeling) -->
+    <g transform="rotate(-102, 285, 275)" filter="url(#depthShadow)">
+      <g>
+        <path d="M 285,270 C 312,285 336,315 326,370 C 321,400 292,395 292,375 L 285,295 Z" fill="url(#tealBody3D)" />
+        <!-- Right Sleeve Cuff -->
+        <g transform="rotate(18, 312, 378)">
+          <rect x="292" y="368" width="36" height="18" rx="9" fill="#03252a" />
+          <rect x="292" y="368" width="36" height="6" rx="3" fill="url(#fabricHighlight)" opacity="0.3" />
+        </g>
+      </g>
+      <!-- Right Hand / Joint Sphere (Glossy Steel) -->
+      <circle cx="320" cy="408" r="9.5" fill="url(#metalJoint3D)" />
+      <circle cx="317" cy="405" r="3.5" fill="#ffffff" opacity="0.25" />
+      <!-- 3D Claw fingers open in a waving / friendly greeting pose -->
+      <path d="M 328,402 C 334,410 335,420 326,428 C 317,434 308,424 312,414 Z" fill="url(#metalJoint3D)" stroke="#040608" stroke-width="1.5" />
+      <circle cx="329" cy="412" r="4.5" fill="#0b0e12" />
+      <circle cx="322" cy="418" r="4.5" fill="#0b0e12" />
+      <!-- Friendly neon active greeting waves (with glowing visual effect) -->
+      <g filter="url(#cyanGlow)">
+        <path d="M 339,397 C 345,402 346,410 344,416" stroke="#1fe5f5" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.8" />
+        <path d="M 345,389 C 353,394 354,404 350,412" stroke="#1fe5f5" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5" />
+      </g>
+    </g>
+
+
+    <!-- ================= 5. DRAWSTRINGS (Realistic hanging curves) ================= -->
+    <g filter="url(#depthShadow)">
+      <!-- Left String -->
+      <path d="M 172,250 Q 155,330 166,360" stroke="#0c8d99" stroke-width="6" stroke-linecap="round" fill="none" />
+      <path d="M 172,250 Q 155,330 166,360" stroke="#1fe5f5" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.75" />
+      <!-- Left Shiny Aglet (3D Metal Cap) -->
+      <circle cx="166" cy="360" r="6.5" fill="url(#metalJoint3D)" stroke="#1fe5f5" stroke-width="1.5" />
+      <circle cx="164" cy="357" r="2" fill="#ffffff" opacity="0.8" />
+
+      <!-- Right String -->
+      <path d="M 228,250 Q 245,325 234,355" stroke="#0c8d99" stroke-width="6" stroke-linecap="round" fill="none" />
+      <path d="M 228,250 Q 245,325 234,355" stroke="#1fe5f5" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.75" />
+      <!-- Right Shiny Aglet -->
+      <circle cx="234" cy="355" r="6.5" fill="url(#metalJoint3D)" stroke="#1fe5f5" stroke-width="1.5" />
+      <circle cx="232" cy="352" r="2" fill="#ffffff" opacity="0.8" />
+    </g>
+
+
+    <!-- ================= 6. THE HOOD (Massive Volumetric Sphere covering the head) ================= -->
+    <!-- Base Spherical Hood Shape -->
+    <path d="M 200,20 C 90,20 48,70 48,178 C 48,284 90,296 200,296 C 310,296 352,284 352,178 C 352,70 310,20 200,20 Z" fill="url(#tealBody3D)" filter="url(#depthShadow)" />
+
+    <!-- Hood Rim Highlights (Thick edge rim lighting for authentic 3D density) -->
+    <path d="M 200,20 C 100,20 60,70 60,178 C 60,236 73,271 103,281" fill="none" stroke="url(#fabricHighlight)" stroke-width="10" opacity="0.4" stroke-linecap="round" />
+    <!-- Hood Shadow / Crease detail on the right -->
+    <path d="M 200,20 C 298,20 340,70 340,178 C 340,236 327,271 297,281" fill="none" stroke="#000d0e" stroke-width="11" opacity="0.55" stroke-linecap="round" />
+
+
+    <!-- ================= 7. INNER HOOD HOLLOW & VISOR FACE ================= -->
+    <!-- Inner Hood Hollow Cavity (Creates a deep, dark recess inside the hood) -->
+    <path d="M 200,42 C 110,42 74,86 74,178 C 74,268 110,278 200,278 C 290,278 326,268 326,178 C 326,86 290,42 200,42 Z" fill="url(#innerHoodVoid)" />
+
+    <!-- Deep Ambient Occlusion Shadow cast inside top of hood onto the visor face -->
+    <path d="M 76,135 C 93,70 148,50 200,50 C 252,50 307,70 324,135 C 312,90 262,70 200,70 C 138,70 88,90 76,135 Z" fill="#000000" opacity="0.85" />
+
+    <!-- Face Visor shifted slightly to the right for a cute 3/4 perspective/turn! -->
+    <g transform="translate(15, 0)">
+      <!-- Glossy 3D Convex Visor Screen -->
+      <g filter="url(#depthShadow)">
+        <rect x="98" y="92" width="204" height="172" rx="84" ry="84" fill="url(#visorGlass3D)" stroke="#11171d" stroke-width="2.5" />
+        <!-- Extra Convex highlight gloss reflection -->
+        <rect x="98" y="92" width="204" height="172" rx="84" ry="84" fill="url(#glassSheen)" pointer-events="none" />
+      </g>
+
+      <!-- Glossy Curved Crescent Reflection on top of visor -->
+      <path d="M 118,112 C 153,99 247,99 282,112 C 257,128 143,128 118,112 Z" fill="#ffffff" opacity="0.22" pointer-events="none" />
+
+      <!-- Curved soft blue/teal environment reflection at the bottom of the visor -->
+      <path d="M 123,244 C 158,256 242,256 277,244 C 252,234 148,234 123,244 Z" fill="#1fe5f5" opacity="0.18" pointer-events="none" />
+
+      <!-- ================= 8. GLOWING EYES (High Intensity Neon Emission) ================= -->
+      <g filter="url(#intenseNeonPink)">
+        <!-- Left Eye (Cute vertical pill with soft rounded glow) -->
+        <rect x="148" y="146" width="25" height="56" rx="12.5" fill="#ff2a6d" />
+        <rect x="151" y="149" width="19" height="50" rx="9.5" fill="#fff0f4" />
+        <ellipse cx="157" cy="160" rx="3.5" ry="5.5" fill="#ffffff" />
+
+        <!-- Right Eye (Cute vertical pill with soft rounded glow) -->
+        <rect x="226" y="146" width="25" height="56" rx="12.5" fill="#ff2a6d" />
+        <rect x="229" y="149" width="19" height="50" rx="9.5" fill="#fff0f4" />
+        <ellipse cx="235" cy="160" rx="3.5" ry="5.5" fill="#ffffff" />
+      </g>
+
+      <!-- Atmospheric glow scattering inside visor glass from pink neon eyes -->
+      <circle cx="160" cy="174" r="42" fill="#ff2a6d" opacity="0.14" filter="blur(10px)" pointer-events="none" />
+      <circle cx="238" cy="174" r="42" fill="#ff2a6d" opacity="0.14" filter="blur(10px)" pointer-events="none" />
+    </g>
+  </g>
+</svg>

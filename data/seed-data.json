@@ -1,0 +1,611 @@
+{
+  "version": 2,
+  "lastUpdated": "2026-09-20T00:00:00.000Z",
+  "settings": {
+    "siteTitle": "Dwireph Kumar Portfolio | Creative Frontend Developer & Video Editor",
+    "siteDescription": "A highly interactive, creative portfolio website built with React, Three.js, and GSAP showcasing 3D experiences, assets, design work, and a real-time admin console dashboard.",
+    "ogTitle": "Dwireph Kumar - Creative Developer & Video Editor",
+    "ogDescription": "Crafting digital experiences blending frontend engineering with cinematic visual design.",
+    "ogImage": "/images/bot_avatar_3d_hoodie.png",
+    "keywords": "Frontend Developer, React, Three.js, GSAP, Video Editing, UI/UX Designer, Creative Portfolio",
+    "navbar": {
+      "brandName": "Dwireph Kumar",
+      "brandStatus": "SCENE ON",
+      "brandVersion": "</> React v19",
+      "hireButtonText": "Hire Me",
+      "hireButtonLink": "#contact",
+      "navLinks": [
+        {
+          "id": "nav-home",
+          "label": "Home",
+          "href": "#landingDiv",
+          "visible": true,
+          "order": 1
+        },
+        {
+          "id": "nav-about",
+          "label": "About",
+          "href": "#about",
+          "visible": true,
+          "order": 2
+        },
+        {
+          "id": "nav-work",
+          "label": "Projects",
+          "href": "#work",
+          "visible": true,
+          "order": 3
+        },
+        {
+          "id": "nav-contact",
+          "label": "Contact",
+          "href": "#contact",
+          "visible": true,
+          "order": 4
+        }
+      ]
+    }
+  },
+  "content": {
+    "hero": {
+      "welcomeBadge": " SATSRIAKAL! WELCOME TO MY SPACE ",
+      "mascotImage": "/images/bot_avatar_3d_hoodie.png",
+      "namePrefix": "I'M ",
+      "name": "DWIREPH KUMAR",
+      "typingWords": [
+        "Cam",
+        "Developer",
+        "Designer",
+        "Tech Enthusiast",
+        "Creative Creator"
+      ],
+      "ctaProjectsText": "View Projects",
+      "ctaProjectsLink": "#work",
+      "ctaResumeText": "Download Resume",
+      "ctaResumeUrl": "/Dwireph_Kumar_Resume.pdf",
+      "ctaHireText": "Hire Me",
+      "ctaHireLink": "#contact",
+      "scrollDownText": "SCROLL DOWN"
+    },
+    "about": {
+      "title": "About Me",
+      "leadParagraph": "I design, develop, and edit experiences that people remember.",
+      "subParagraph1": "As a Frontend Developer, UI/UX Designer, and Video Editor, I blend technology with creativity to build interactive websites and compelling visual content. From responsive interfaces powered by React and TypeScript to cinematic edits, motion graphics, and brand-focused videos, I create digital experiences that are both visually engaging and technically refined.",
+      "subParagraph2": "Driven by curiosity and attention to detail, I believe every pixel, transition, and frame should serve a purpose creating products and content that are intuitive, impactful, and enjoyable to experience.",
+      "badges": [
+        "Creative Frontend",
+        "Video Editing",
+        "3D Design"
+      ],
+      "stats": [
+        {
+          "id": "stat-1",
+          "number": "2+",
+          "label": "Years of Experience",
+          "glow": "amber"
+        },
+        {
+          "id": "stat-2",
+          "number": "3+",
+          "label": "Projects Completed",
+          "glow": "cyan"
+        },
+        {
+          "id": "stat-3",
+          "number": "99%",
+          "label": "Client Satisfaction",
+          "glow": "purple"
+        },
+        {
+          "id": "stat-4",
+          "number": "100%",
+          "label": "Design & Dev Passion",
+          "glow": "green"
+        }
+      ]
+    },
+    "whatIDo": {
+      "title": "What I do",
+      "services": [
+        {
+          "id": "service-1",
+          "title": "FRONTEND DEVELOPMENT",
+          "description": "Crafting modern, interactive, and high-performance user interfaces. Specializing in building responsive web-designs and clean , fluid animations.",
+          "tags": [
+            "React",
+            "TypeScript",
+            "JavaScript",
+            "Three.js",
+            "Tailwind CSS",
+            "Next.js",
+            "HTML5 & CSS3"
+          ]
+        },
+        {
+          "id": "service-2",
+          "title": "VIDEO EDITING & DESIGN",
+          "description": "Creating high-impact visual stories, dynamic motion graphics, and engaging post-production content. Combining advanced cutting techniques, color grading, and 3D elements to deliver compelling cinematic videos.",
+          "tags": [
+            "CapCut",
+            "VN",
+            "Video Editing",
+            "3D Animation",
+            "Color Grading"
+          ]
+        }
+      ]
+    },
+    "career": {
+      "title": "My career & experience",
+      "entries": [
+        {
+          "id": "exp-1",
+          "role": "Frontend Developer & Designer",
+          "company": "Creative Studio",
+          "period": "2024",
+          "description": "Architected responsive interactive web applications using React, Three.js, and GSAP, achieving top tier performance scores."
+        },
+        {
+          "id": "exp-2",
+          "role": "Video Editor & Visual Designer",
+          "company": "Digital Media Productions",
+          "period": "2025",
+          "description": "Produced high-impact commercial video content, motion graphics, and digital brand collateral for global clients."
+        },
+        {
+          "id": "exp-3",
+          "role": "Creative Technologist",
+          "company": "Independent Freelance",
+          "period": "NOW",
+          "description": "Delivering end-to-end full stack web products, 3D web experiences, and cinematic creative direction."
+        }
+      ]
+    },
+    "contact": {
+      "title": "Get in Touch",
+      "subtitle": "Have a project or opportunity? Let's build something epic together!",
+      "directEmail": "dwireph3@gmail.com",
+      "directPhone": "+91 91229 49352",
+      "designerCredit": "Designed & Developed by Dwireph Kumar",
+      "copyright": "2026 • All Rights Reserved"
+    },
+    "hireMe": {
+      "title": "LET'S BUILD SOMETHING GREAT",
+      "headline": "Turning vision into high-impact digital experiences.",
+      "description": "I create interactive digital experiences, modern web applications, and engaging visual content.",
+      "helpList": [
+        {
+          "category": "Frontend Development",
+          "skills": [
+            "React",
+            "Next.js",
+            "TypeScript",
+            "Tailwind CSS"
+          ]
+        },
+        {
+          "category": "Creative Web Development",
+          "skills": [
+            "Three.js",
+            "GSAP",
+            "Interactive experiences"
+          ]
+        },
+        {
+          "category": "Video & Visual Content",
+          "skills": [
+            "Video editing",
+            "Motion graphics",
+            "Visual design"
+          ]
+        }
+      ],
+      "availableFor": [
+        "Internships",
+        "Freelance Projects",
+        "Web Development",
+        "Video Editing",
+        "Creative Collaborations"
+      ],
+      "ctaHireText": "HIRE ME",
+      "ctaContactText": "CONTACT ME",
+      "ctaResumeText": "DOWNLOAD RESUME"
+    },
+    "socialLinks": [
+      {
+        "id": "soc-1",
+        "platform": "GitHub",
+        "url": "https://github.com/dashboard",
+        "label": "Github",
+        "icon": "github",
+        "enabled": true,
+        "order": 1
+      },
+      {
+        "id": "soc-2",
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/in/dwireph-gunjan?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+        "label": "Linkedin",
+        "icon": "linkedin",
+        "enabled": true,
+        "order": 2
+      },
+      {
+        "id": "soc-3",
+        "platform": "Twitter",
+        "url": "https://x.com/gunjanqd7o",
+        "label": "Twitter",
+        "icon": "twitter",
+        "enabled": true,
+        "order": 3
+      },
+      {
+        "id": "soc-4",
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/im_.gunjan_?igsh=aTRzZG1oY2RxZWJ6",
+        "label": "Instagram",
+        "icon": "instagram",
+        "enabled": true,
+        "order": 4
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": "proj_1789845319924",
+      "title": "Phantom chat",
+      "workType": "project",
+      "category": "Projects",
+      "tools": "React, TypeScript, Tailwind CSS",
+      "description": "Phantom Chat is my first frontend project, focused on creating a modern and futuristic secure-messaging interface. I designed the dark neon-themed UI with a custom phantom character, responsive navigation, login/signup interface, and feature-focused hero section. The project helped me build a strong foundation in frontend design, responsive layouts, UI/UX, typography, spacing, and interactive web interfaces.",
+      "longDescription": "",
+      "link": "https://github.com",
+      "githubLink": "https://github.com",
+      "color": "#A855F7",
+      "image": "/uploads/Screenshot_2026-09-20_002724_1789845316731_u0xh98.png",
+      "media": [
+        {
+          "id": "med_1789845316742_iaib",
+          "url": "/uploads/Screenshot_2026-09-20_002724_1789845316731_u0xh98.png",
+          "mediaType": "image",
+          "title": "Screenshot 2026-09-20 002724"
+        }
+      ],
+      "published": true,
+      "featured": false,
+      "order": 2,
+      "date": "2026-09-19"
+    },
+    {
+      "id": "proj_1789845926429",
+      "title": "To make Birthday  special",
+      "workType": "project",
+      "category": "Projects",
+      "tools": "React, TypeScript, Tailwind CSS",
+      "description": "A creative birthday website designed to make a special celebration more memorable through a colorful and interactive experience. I focused on a warm visual design, personalized birthday messages, smooth animations, attractive typography, and responsive layouts so the experience feels engaging across mobile and desktop devices.",
+      "longDescription": "",
+      "link": "https://github.com",
+      "githubLink": "https://github.com",
+      "color": "#A855F7",
+      "image": "/uploads/Screenshot_2026-09-20_005412_1789845921786_3xvp8x.png",
+      "media": [
+        {
+          "id": "med_1789845921795_0k7j",
+          "url": "/uploads/Screenshot_2026-09-20_005412_1789845921786_3xvp8x.png",
+          "mediaType": "image",
+          "title": "Screenshot 2026-09-20 005412"
+        }
+      ],
+      "published": true,
+      "featured": false,
+      "order": 3,
+      "date": "2026-09-19"
+    },
+    {
+      "id": "proj_1789846464605",
+      "title": "Cinematic reel",
+      "workType": "edited-video",
+      "category": "Edited Videos",
+      "tools": "Premiere Pro, Capcut",
+      "description": "A cinematic travel edit combining creative transitions, split-screen effects, reflections, layered footage, color grading, and rhythmic cuts to capture the spiritual atmosphere and vibrant energy of Haridwar in a short-form visual story.",
+      "longDescription": "",
+      "link": "https://www.instagram.com/reel/DTkIJFRk8oC/?stkn=bzlhZDE2c2N5ajZi",
+      "githubLink": "",
+      "color": "#EC4899",
+      "image": "/uploads/cinematic_reel_poster.jpg",
+      "videoPoster": "/uploads/cinematic_reel_poster.jpg",
+      "media": [
+        {
+          "id": "m_vid_1789846463695",
+          "url": "/uploads/______________________instavir_1789846262246_pn1imh.mp4",
+          "poster": "/uploads/cinematic_reel_poster.jpg",
+          "mediaType": "video",
+          "title": "Cinematic reel"
+        }
+      ],
+      "published": true,
+      "featured": true,
+      "order": 3,
+      "date": "2026-09-19",
+      "videoUrl": "/uploads/______________________instavir_1789846262246_pn1imh.mp4"
+    }
+  ],
+  "media": [
+    {
+      "id": "med_1789846262281_s3q6",
+      "filename": "ððð.........#instaviralreelsâ¥ï¸ #haridwar #travel #uttrakhand_dairies #travel.mp4",
+      "url": "/uploads/______________________instavir_1789846262246_pn1imh.mp4",
+      "poster": "/uploads/cinematic_reel_poster.jpg",
+      "mediaType": "video",
+      "mimeType": "video/mp4",
+      "size": 2727883,
+      "createdAt": "2026-09-19T19:31:02.281Z",
+      "title": "Haridwar Travel Reel"
+    },
+    {
+      "id": "med_1789845921795_0k7j",
+      "filename": "Screenshot 2026-09-20 005412.png",
+      "url": "/uploads/Screenshot_2026-09-20_005412_1789845921786_3xvp8x.png",
+      "mediaType": "image",
+      "mimeType": "image/png",
+      "size": 432228,
+      "createdAt": "2026-09-19T19:25:21.795Z",
+      "title": "image"
+    },
+    {
+      "id": "med_1789845316742_iaib",
+      "filename": "Screenshot 2026-09-20 002724.png",
+      "url": "/uploads/Screenshot_2026-09-20_002724_1789845316731_u0xh98.png",
+      "mediaType": "image",
+      "mimeType": "image/png",
+      "size": 476385,
+      "createdAt": "2026-09-19T19:15:16.742Z",
+      "title": "image"
+    },
+    {
+      "id": "med_1789490710120_r3a9",
+      "filename": "0317 (2).mp4",
+      "url": "/uploads/0317__2__1789490710028_fkt9uo.mp4",
+      "mediaType": "video",
+      "mimeType": "video/mp4",
+      "size": 15096892,
+      "createdAt": "2026-09-15T16:45:10.120Z",
+      "title": "0317 (2).mp4"
+    },
+    {
+      "id": "med-1",
+      "filename": "react2.webp",
+      "url": "/images/react2.webp",
+      "mediaType": "image",
+      "mimeType": "image/webp",
+      "size": 28672,
+      "createdAt": "2026-09-02T16:37:40.211Z",
+      "title": "3D View Portfolio Screenshot"
+    },
+    {
+      "id": "med-2",
+      "filename": "node2.webp",
+      "url": "/images/node2.webp",
+      "mediaType": "image",
+      "mimeType": "image/webp",
+      "size": 29696,
+      "createdAt": "2026-09-02T16:37:40.211Z",
+      "title": "AI Dashboard Screenshot"
+    },
+    {
+      "id": "med-3",
+      "filename": "next2.webp",
+      "url": "/images/next2.webp",
+      "mediaType": "image",
+      "mimeType": "image/webp",
+      "size": 29696,
+      "createdAt": "2026-09-02T16:37:40.211Z",
+      "title": "AWS Cloud Pipeline Screenshot"
+    },
+    {
+      "id": "med-4",
+      "filename": "mongo.webp",
+      "url": "/images/mongo.webp",
+      "mediaType": "image",
+      "mimeType": "image/webp",
+      "size": 35840,
+      "createdAt": "2026-09-02T16:37:40.211Z",
+      "title": "Microservices Architecture Screenshot"
+    },
+    {
+      "id": "med-5",
+      "filename": "bot_avatar_3d_hoodie.png",
+      "url": "/images/bot_avatar_3d_hoodie.png",
+      "mediaType": "image",
+      "mimeType": "image/png",
+      "size": 386048,
+      "createdAt": "2026-09-02T16:37:40.211Z",
+      "title": "3D Mascot Hero Avatar"
+    }
+  ],
+  "messages": [],
+  "auditLogs": [
+    {
+      "id": "log_1789846464605_mqz0",
+      "action": "Project Created",
+      "details": "Created edited-video\"Cinematic reel\"(ID:proj_1789846464605)",
+      "timestamp": "2026-09-19T19:34:24.605Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789846262281_jagk",
+      "action": "Media Uploaded",
+      "details": "Uploaded file ððð.........#instaviralreelsâ¥ï¸ #haridwar #travel #uttrakhand_dairies #travel.mp4(2663.9KB)",
+      "timestamp": "2026-09-19T19:31:02.281Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789846051214_s58z",
+      "action": "Project Deleted",
+      "details": "Deleted project\"Cinematic Motion & VFX Showreel\"(ID:vid-1)",
+      "timestamp": "2026-09-19T19:27:31.214Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789845926429_8w61",
+      "action": "Project Created",
+      "details": "Created project\"To make Birthday  special\"(ID:proj_1789845926429)",
+      "timestamp": "2026-09-19T19:25:26.429Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789845921795_ks2u",
+      "action": "Media Uploaded",
+      "details": "Uploaded file Screenshot 2026-09-20 005412.png(422.1KB)",
+      "timestamp": "2026-09-19T19:25:21.795Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789845319924_mlwy",
+      "action": "Project Created",
+      "details": "Created project\"Phantom chat\"(ID:proj_1789845319924)",
+      "timestamp": "2026-09-19T19:15:19.924Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789845316742_zgmk",
+      "action": "Media Uploaded",
+      "details": "Uploaded file Screenshot 2026-09-20 002724.png(465.2KB)",
+      "timestamp": "2026-09-19T19:15:16.742Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789845181546_o053",
+      "action": "Project Deleted",
+      "details": "Deleted project\"Distributed Microservices App\"(ID:4)",
+      "timestamp": "2026-09-19T19:13:01.546Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789845177055_cmi6",
+      "action": "Project Deleted",
+      "details": "Deleted project\"AWS Cloud Automation\"(ID:3)",
+      "timestamp": "2026-09-19T19:12:57.055Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789845173478_mrh9",
+      "action": "Project Deleted",
+      "details": "Deleted project\"Gemini AI Workspace Integration\"(ID:2)",
+      "timestamp": "2026-09-19T19:12:53.478Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789845169085_ktzs",
+      "action": "Project Deleted",
+      "details": "Deleted project\"3D Portfolio Website\"(ID:1)",
+      "timestamp": "2026-09-19T19:12:49.085Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789491372890_38y3",
+      "action": "Message Deleted",
+      "details": "Deleted message from \"Audit Tester\" (ID: msg_1789491353078)",
+      "timestamp": "2026-09-15T16:56:12.890Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789491370109_glpt",
+      "action": "Message Updated",
+      "details": "Marked message from \"Audit Tester\" as read",
+      "timestamp": "2026-09-15T16:56:10.109Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789491353078_y7ko",
+      "action": "Contact Submission",
+      "details": "New inquiry received from Audit Tester (audit@test.com)",
+      "timestamp": "2026-09-15T16:55:53.078Z",
+      "user": "Visitor"
+    },
+    {
+      "id": "log_1789490710120_eep9",
+      "action": "Media Uploaded",
+      "details": "Uploaded file 0317 (2).mp4 (14743.1 KB)",
+      "timestamp": "2026-09-15T16:45:10.120Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789490441650_mo69",
+      "action": "Project Deleted",
+      "details": "Deleted project \"Cinematic Motion & VFX Showreel\" (ID: vid-1)",
+      "timestamp": "2026-09-15T16:40:41.650Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789490435457_u7f6",
+      "action": "Project Deleted",
+      "details": "Deleted project \"Distributed Microservices App\" (ID: 4)",
+      "timestamp": "2026-09-15T16:40:35.457Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789490433158_ydft",
+      "action": "Project Deleted",
+      "details": "Deleted project \"AWS Cloud Automation\" (ID: 3)",
+      "timestamp": "2026-09-15T16:40:33.158Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789490431131_8phm",
+      "action": "Project Deleted",
+      "details": "Deleted project \"Gemini AI Workspace Integration\" (ID: 2)",
+      "timestamp": "2026-09-15T16:40:31.131Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789490428215_spnr",
+      "action": "Project Deleted",
+      "details": "Deleted project \"3D Portfolio Website\" (ID: 1)",
+      "timestamp": "2026-09-15T16:40:28.215Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789490172791_o26n",
+      "action": "Message Deleted",
+      "details": "Deleted message from \"Verification Bot\" (ID: msg_1789490172787)",
+      "timestamp": "2026-09-15T16:36:12.791Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1789490172787_3xg8",
+      "action": "Contact Submission",
+      "details": "New inquiry received from Verification Bot (test@example.com)",
+      "timestamp": "2026-09-15T16:36:12.787Z",
+      "user": "Visitor"
+    },
+    {
+      "id": "log_1789490156491_d4uk",
+      "action": "Contact Submission",
+      "details": "New inquiry received from Tester (test@example.com)",
+      "timestamp": "2026-09-15T16:35:56.491Z",
+      "user": "Visitor"
+    },
+    {
+      "id": "log_1789489008766_ojg4",
+      "action": "Message Deleted",
+      "details": "Deleted message from \"Sarah Chen\" (ID: msg-1)",
+      "timestamp": "2026-09-15T16:16:48.766Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log_1788375017344_bolz",
+      "action": "Content Published",
+      "details": "Updated hero, about, services, or contact sections.",
+      "timestamp": "2026-09-02T18:50:17.344Z",
+      "user": "Admin"
+    },
+    {
+      "id": "log-1",
+      "action": "System Initialized",
+      "details": "Portfolio CMS database booted with verified production data.",
+      "timestamp": "2026-09-02T16:37:40.211Z",
+      "user": "System"
+    }
+  ]
+}

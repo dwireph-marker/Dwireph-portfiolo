@@ -1,0 +1,126 @@
+
+
+.loaderGame-ball {
+  position: absolute;
+  left: 20%;
+  top: 0%;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #a87cff;
+  animation: ball25 7s infinite;
+  transform: translateY(10px);
+  animation-timing-function: cubic-bezier(0.3, 1.18, 0.63, 1.28);
+}
+.loading-marquee {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  color: var(--backgroundColor);
+  font-size: 60px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.loading-marquee span {
+  padding: 0px 50px;
+  position: relative;
+}
+.loading-marquee span::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: var(--backgroundColor);
+  position: absolute;
+  top: 50%;
+  border-radius: 50px;
+  left: 0px;
+  transform: translate(-50%, -50%);
+}
+@keyframes ball25 {
+  0% {
+    transform: translateY(70px);
+  }
+  15% {
+    transform: translateY(10px);
+  }
+  30% {
+    transform: translateY(70px);
+  }
+  45% {
+    transform: translateY(10px);
+  }
+  67% {
+    transform: translateY(70px);
+  }
+  80% {
+    transform: translateY(10px);
+  }
+  90% {
+    transform: translateY(70px);
+  }
+  100% {
+    transform: translateY(70px);
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .loading-wrap {
+    --Lsize: 210px;
+  }
+  .loading-button {
+    padding: 30px 70px;
+    font-size: 25px;
+  }
+  .loading-container {
+    left: 70px;
+  }
+  .loading-marquee {
+    font-size: 100px;
+  }
+}
+@media only screen and (min-width: 500px) {
+  .loading-header {
+    padding: 20px 0px;
+  }
+  .loader-title {
+    font-size: 16px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .loading-header {
+    padding: 35px 0px;
+  }
+  .loader-title {
+    font-size: 18px;
+  }
+}
+
+/* Custom styled logo image & text in loader */
+.loader-logo-img {
+  width: 32px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(224, 83, 7, 0.6));
+  animation: logo-gently-rotate 4s ease-in-out infinite alternate;
+}
+
+.loader-logo-text {
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #E05307, #FF7E40);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes logo-gently-rotate {
+  0% {
+    transform: rotate(-5deg) scale(1);
+  }
+  100% {
+    transform: rotate(5deg) scale(1.05);
+  }
+}

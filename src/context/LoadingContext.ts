@@ -1,0 +1,19 @@
+import { createContext, useContext } from "react";
+
+export interface LoadingType {
+  isLoading: boolean;
+  setIsLoading: (state: boolean) => void;
+  setLoading: (percent: number) => void;
+  view: "portfolio" | "admin";
+  setView: (view: "portfolio" | "admin") => void;
+}
+
+export const LoadingContext = createContext<LoadingType | null>(null);
+
+export const useLoading = () => {
+  const context = useContext(LoadingContext);
+  if (!context) {
+    throw new Error("useLoading must be used within a LoadingProvider");
+  }
+  return context;
+};

@@ -1,0 +1,210 @@
+
+
+/* Mobile landscape orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+  .landing-section {
+    padding: 44px 12px 8px 12px;
+  }
+
+  .welcome-badge-wrapper {
+    margin-bottom: 2px;
+  }
+
+  .hero-text {
+    font-size: 19px;
+    margin: 0 0 2px 0;
+  }
+
+  .typing-container {
+    height: 22px;
+    min-height: 22px;
+    max-height: 22px;
+    margin: 2px auto 6px auto;
+  }
+
+  .landing-actions-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    max-width: 480px;
+  }
+
+  .action-btn {
+    width: auto;
+    flex: 1 1 30%;
+    min-height: 30px;
+    padding: 4px 8px;
+    font-size: 9.5px;
+  }
+
+  .scroll-down-wrapper {
+    margin-top: 5px;
+  }
+}
+
+
+/* Floating & Glowing Mascot Styles */
+.landing-hero-titles {
+  position: relative;
+}
+
+.floating-mascot-container {
+  position: relative;
+  width: 170px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
+  pointer-events: auto;
+  margin: 0 auto 20px auto;
+  animation: float-animation 6s ease-in-out infinite;
+}
+
+.floating-mascot-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mask-image: radial-gradient(ellipse at center, black 72%, transparent 99%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 72%, transparent 99%);
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.7));
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;
+}
+
+.floating-mascot-container:hover .floating-mascot-img {
+  transform: scale(1.12) rotate(2deg);
+  filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.8));
+  cursor: pointer;
+}
+
+/* Wide backlight glowing ambient light filling right to left */
+.mascot-glowing-backlight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(1000px, 90vw);
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(18, 179, 192, 0.4) 0%,
+    rgba(14, 115, 125, 0.22) 40%,
+    rgba(224, 83, 7, 0.08) 65%,
+    transparent 85%
+  );
+  filter: blur(50px);
+  z-index: -1;
+  animation: glow-pulse 4s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes float-animation {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes glow-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.12);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments for mascot */
+@media (max-width: 1200px) {
+  .floating-mascot-container {
+    width: 120px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 900px) {
+  .floating-mascot-container {
+    width: 100px;
+    height: 150px;
+    margin-bottom: 15px;
+  }
+}
+
+
+
+/* 3D Character Canvas & Container Styles */
+.character-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none; /* Let pointer events pass through to underlying buttons and links */
+}
+
+.character-model {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  opacity: 0;
+}
+
+.character-model canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.character-rim {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+}
+
+.character-hover {
+  position: absolute;
+  top: 25%;
+  left: 35%;
+  width: 30%;
+  height: 35%;
+  cursor: pointer;
+  z-index: 10;
+  pointer-events: auto; /* Enable touch/hover on the face area for eyebrows triggers */
+}
+
+@media (max-width: 1024px) {
+  .character-container {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .floating-mascot-container {
+    width: 92px;
+    height: 122px;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+  }
+
+  .hero-text {
+    position: relative;
+    z-index: 26;
+  }
+}

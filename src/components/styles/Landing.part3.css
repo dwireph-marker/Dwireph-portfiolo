@@ -1,0 +1,228 @@
+
+
+/* Mobile Screen <= 480px (e.g. 430px, 414px, 402px, 393px, 390px) */
+@media (max-width: 480px) {
+  .landing-section {
+    padding: calc(56px + env(safe-area-inset-top, 0px)) 12px calc(20px + env(safe-area-inset-bottom, 0px)) 12px;
+  }
+
+  .welcome-badge-wrapper {
+    margin-bottom: 6px;
+  }
+
+  .welcome-badge {
+    padding: 5px 12px;
+    font-size: 9.5px;
+  }
+
+  .landing-hero-titles {
+    margin: 0 auto 6px auto;
+  }
+
+  .floating-mascot-container {
+    width: 86px;
+    height: 114px;
+    margin: 0 auto 5px auto;
+  }
+
+  .mascot-glowing-backlight {
+    width: 220px;
+    height: 150px;
+    filter: blur(24px);
+  }
+
+  .hero-text {
+    font-size: 29px;
+    margin: 0 0 4px 0;
+  }
+
+  .typing-container {
+    height: 30px;
+    min-height: 30px;
+    max-height: 30px;
+    margin: 3px auto 12px auto;
+    padding: 3px 12px;
+  }
+
+  .typing-prompt,
+  .typing-text,
+  .typing-cursor {
+    font-size: 11px;
+  }
+
+  .landing-actions-container {
+    max-width: 290px;
+    gap: 8px;
+    padding: 0 8px;
+  }
+
+  .action-btn {
+    min-height: 44px;
+    font-size: 11.5px;
+    padding: 8px 14px;
+  }
+
+  .scroll-down-wrapper {
+    margin-top: auto;
+    padding-top: 14px;
+    padding-bottom: 4px;
+  }
+}
+
+/* Small Screen <= 375px (e.g. iPhone SE, 375px) */
+@media (max-width: 375px) {
+  .landing-section {
+    padding: calc(52px + env(safe-area-inset-top, 0px)) 10px calc(16px + env(safe-area-inset-bottom, 0px)) 10px;
+  }
+
+  .welcome-badge {
+    padding: 5px 10px;
+    font-size: 9px;
+  }
+
+  .floating-mascot-container {
+    width: 76px;
+    height: 100px;
+    margin: 0 auto 4px auto;
+  }
+
+  .mascot-glowing-backlight {
+    width: 190px;
+    height: 135px;
+    filter: blur(20px);
+  }
+
+  .hero-text {
+    font-size: 26px;
+  }
+
+  .typing-container {
+    height: 28px;
+    min-height: 28px;
+    max-height: 28px;
+    margin: 2px auto 10px auto;
+    padding: 2px 10px;
+  }
+
+  .typing-prompt,
+  .typing-text,
+  .typing-cursor {
+    font-size: 10.5px;
+  }
+
+  .landing-actions-container {
+    max-width: 270px;
+    gap: 7px;
+  }
+
+  .action-btn {
+    min-height: 44px;
+    font-size: 11px;
+    padding: 7px 12px;
+  }
+
+  .scroll-down-wrapper {
+    margin-top: auto;
+    padding-top: 10px;
+    padding-bottom: 2px;
+  }
+}
+
+/* Ultra-compact Screen <= 360px (e.g. Galaxy S20, 360px) */
+@media (max-width: 360px) {
+  .landing-section {
+    padding: calc(48px + env(safe-area-inset-top, 0px)) 8px calc(14px + env(safe-area-inset-bottom, 0px)) 8px;
+  }
+
+  .welcome-badge {
+    padding: 4px 8px;
+    font-size: 8.5px;
+  }
+
+  .floating-mascot-container {
+    width: 70px;
+    height: 92px;
+    margin: 0 auto 4px auto;
+  }
+
+  .mascot-glowing-backlight {
+    width: 170px;
+    height: 120px;
+    filter: blur(18px);
+  }
+
+  .hero-text {
+    font-size: 23px;
+  }
+
+  .typing-container {
+    height: 26px;
+    min-height: 26px;
+    max-height: 26px;
+    margin: 2px auto 8px auto;
+    padding: 2px 8px;
+  }
+
+  .typing-prompt,
+  .typing-text,
+  .typing-cursor {
+    font-size: 10px;
+  }
+
+  .landing-actions-container {
+    max-width: 250px;
+    gap: 6px;
+  }
+
+  .action-btn {
+    min-height: 36px;
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+
+  .scroll-down-wrapper {
+    margin-top: 8px;
+  }
+}
+
+/* Short height mobile viewports (e.g. 375x667, 360x800) */
+@media (max-height: 700px) and (max-width: 1024px) {
+  .landing-section {
+    padding: calc(46px + env(safe-area-inset-top, 0px)) 10px 0px 10px;
+  }
+
+  .welcome-badge-wrapper {
+    margin-bottom: 4px;
+  }
+
+  .landing-hero-titles {
+    margin-bottom: 6px;
+  }
+
+  .hero-text {
+    font-size: 24px;
+    margin: 0 0 3px 0;
+  }
+
+  .typing-container {
+    height: 26px;
+    min-height: 26px;
+    max-height: 26px;
+    margin: 2px auto 8px auto;
+  }
+
+  .landing-actions-container {
+    gap: 6px;
+    max-width: 260px;
+  }
+
+  .action-btn {
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+
+  .scroll-down-wrapper {
+    margin-top: 8px;
+  }
+}
