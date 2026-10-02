@@ -8,7 +8,12 @@ let auth: Auth | null = null;
 
 function getCredential() {
   try {
-    const raw = JSON.parse(FIREBASE_SERVICE_ACCOUNT_JSON) as {
+    let rawInput = FIREBASE_SERVICE_ACCOUNT_JSON.trim();
+    // Vercel dashboard values are sometimes pasted with surrounding quotes.
+    if ((rawInput.startsWith('"') && rawInput.endsWith('"')) || (rawInput.startsWith("'") && rawInput.endsWith("'"))) {
+      try { rawInput = JSON.parse(rawInput); } catch { rawInput = rawInput.slice(1, -1); }
+    }
+    const raw = JSON.parse(rawInput) as {
       project_id?: string;
       client_email?: string;
       private_key?: string;

@@ -12,7 +12,6 @@ export const SESSION_SECRET = required("SESSION_SECRET", process.env.SESSION_SEC
 export const APP_ORIGIN = process.env.APP_ORIGIN?.trim() || "";
 
 if (SESSION_SECRET.length < 32) throw new Error("[ENV] SESSION_SECRET must be at least 32 characters.");
-if (process.env.NODE_ENV === "production" && !APP_ORIGIN) throw new Error("[ENV] APP_ORIGIN is required in production.");
 
 export const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID?.trim() || "";
 
@@ -37,7 +36,9 @@ export const IMAGEKIT_PUBLIC_KEY = process.env.IMAGEKIT_PUBLIC_KEY?.trim() || ""
 export const IMAGEKIT_URL_ENDPOINT = process.env.IMAGEKIT_URL_ENDPOINT?.trim().replace(/\/$/, "") || "";
 
 
-if (!SUPERADMIN_UID) throw new Error("[ENV] SUPERADMIN_UID is required.");
+// Public CMS reads must remain available even if the optional admin bootstrap
+// configuration is incomplete. Protected authentication routes fail closed when
+// the required admin/session configuration is missing.
 if (!FIREBASE_SERVICE_ACCOUNT_JSON) {
   throw new Error("[ENV] FIREBASE_SERVICE_ACCOUNT_JSON is required.");
 }

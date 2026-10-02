@@ -209,7 +209,13 @@ async function initializeFirestore() {
   if (needsCoreSeed) {
     const seed = await readSeed();
     await withTimeout(persistSeed(seed), 60_000, "Firestore initial seed upload");
-    await withTimeout(initializeAdmin(), 15_000, "Firebase admin initialization");
+    if (SUPERADMIN_UID) {
+      try {
+        await withTimeout(initializeAdmin(), 15_000, "Firebase admin initialization");
+      } catch (error) {
+        console.error("[AUTH] Superadmin bootstrap skipped; CMS data initialization will continue:", error instanceof Error ? error.message : error);
+      }
+    }
     await firestore.collection("cms").doc("meta").set({
       version: seed.version,
       lastUpdated: new Date().toISOString(),
@@ -220,10 +226,9 @@ async function initializeFirestore() {
   }
 
   // Existing runtime data is authoritative. Do not reconcile, reseed, or overwrite
-  // production content during startup. This path requires no local seed file, which
-  // makes it safe for Vercel Functions where source-data files are not guaranteed to
-  // be included in the deployed function bundle.
-  await withTimeout(initializeAdmin(), 15_000, "Firebase admin initialization");
+  // production content during startup. Most importantly, do not make public CMS
+  // reads depend on the optional superadmin bootstrap configuration. A bad/missing
+  // SUPERADMIN_UID must not turn the public portfolio into a database error.
 }
 
 let readyPromise: Promise<void> | null = null;
@@ -574,10 +579,23 @@ export const serverDB = {
     if (decoded.uid !== data.localId) return null;
     const user = await getFirebaseAuth().getUser(decoded.uid);
     if (user.disabled) return null;
-    const adminSnapshot = await getFirebaseDb().collection("admins").doc(user.uid).get();
+    const adminRef = getFirebaseDb().collection("admins").doc(user.uid);
+    let adminSnapshot = await adminRef.get();
+    if (!adminSnapshot.exists && SUPERADMIN_UID && user.uid === SUPERADMIN_UID) {
+      await adminRef.set({
+        email: user.email || email.trim(),
+        firebaseUid: user.uid,
+        role: "superadmin",
+        disabled: Boolean(user.disabled),
+        authProvider: "firebase-auth",
+        updatedAt: new Date().toISOString(),
+      }, { merge: true });
+      adminSnapshot = await adminRef.get();
+    }
     if (!adminSnapshot.exists) return null;
-    const admin = adminSnapshot.data() as { role?: string; email?: string; firebaseUid?: string };
+    const admin = adminSnapshot.data() as { role?: string; email?: string; firebaseUid?: string; disabled?: boolean };
     if (!["admin", "superadmin"].includes(admin.role || "")) return null;
+    if (admin.disabled) return null;
     if (admin.firebaseUid && admin.firebaseUid !== user.uid) return null;
     return { uid: user.uid, email: user.email || email.trim(), role: admin.role as "admin" | "superadmin" };
   },
@@ -687,8 +705,8 @@ export const serverDB = {
   async getAdminProfile(firebaseUid?: string) {
     await ensureDatabaseReady();
     if (!firebaseUid) throw new Error("Authenticated Firebase UID is required.");
-    const admin = await getDoc<{ email?: string; role?: string; firebaseUid?: string }>("admins", firebaseUid);
-    if (!admin || !["admin", "superadmin"].includes(admin.role || "")) throw new Error("Database error");
+    const admin = await getDoc<{ email?: string; role?: string; firebaseUid?: string; disabled?: boolean }>("admins", firebaseUid);
+    if (!admin || admin.disabled || admin.firebaseUid !== firebaseUid || !["admin", "superadmin"].includes(admin.role || "")) throw new Error("Database error");
     return { email: admin.email || "", role: admin.role as "admin" | "superadmin" };
   },
 };
