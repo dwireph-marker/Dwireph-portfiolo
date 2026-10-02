@@ -2,10 +2,10 @@ import express from "express";
 import path from "path";
 import crypto from "node:crypto";
 import cookieParser from "cookie-parser";
-import "./server/env";
-import { serverDB, ensureDatabaseReady } from "./server/db";
-import { getImageKitVideoPlaybackUrl } from "./server/imagekit";
-import { IMAGEKIT_PRIVATE_KEY, IMAGEKIT_PUBLIC_KEY, IMAGEKIT_URL_ENDPOINT } from "./server/env";
+import "./server/env.js";
+import { serverDB, ensureDatabaseReady } from "./server/db.js";
+import { getImageKitVideoPlaybackUrl } from "./server/imagekit.js";
+import { IMAGEKIT_PRIVATE_KEY, IMAGEKIT_PUBLIC_KEY, IMAGEKIT_URL_ENDPOINT } from "./server/env.js";
 
 const app = express();
 app.set("trust proxy", process.env.TRUST_PROXY_HOPS ? Number(process.env.TRUST_PROXY_HOPS) : 0);

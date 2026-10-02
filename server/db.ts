@@ -2,11 +2,11 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
 import type { Firestore } from "firebase-admin/firestore";
-import { getFirebaseAuth, getFirebaseDb } from "./firebase";
-import { deleteFromImageKit } from "./imagekit";
-import { FIREBASE_WEB_API_KEY, SESSION_SECRET, SUPERADMIN_UID } from "./env";
-import type { CMSDatabase, ContactSubmission, WebsiteContent, WebsiteSettings, MediaLibraryItem, AuditLogEntry } from "../src/types/cms";
-import type { ProjectItem } from "../src/types/project";
+import { getFirebaseAuth, getFirebaseDb } from "./firebase.js";
+import { deleteFromImageKit } from "./imagekit.js";
+import { FIREBASE_WEB_API_KEY, SESSION_SECRET, SUPERADMIN_UID } from "./env.js";
+import type { CMSDatabase, ContactSubmission, WebsiteContent, WebsiteSettings, MediaLibraryItem, AuditLogEntry } from "../src/types/cms.js";
+import type { ProjectItem } from "../src/types/project.js";
 
 const SEED_FILE = path.join(process.cwd(), "data", "seed-data.json");
 const MAX_AUDIT_LOGS = 200;
@@ -381,8 +381,8 @@ export const serverDB = {
     return copy;
   },
   async reorderProjects(ids: string[]) {
-    const projects = await this.getProjects(true);
-    const map = new Map(projects.map((project) => [project.id, project]));
+    const projects: ProjectItem[] = await this.getProjects(true);
+    const map = new Map<string, ProjectItem>(projects.map((project: ProjectItem) => [project.id, project]));
     const ordered: ProjectItem[] = [];
     ids.forEach((id) => {
       const project = map.get(id);
@@ -521,7 +521,7 @@ export const serverDB = {
     const allowedProjectKeys = new Set(["id","title","workType","category","link","githubLink","description","longDescription","tools","image","imageUrl","thumbnail","coverImage","color","media","published","featured","order","date","videoUrl","videoPoster"]);
     for (const project of data.projects) {
       if (!project || typeof project !== "object" || Array.isArray(project)) return { success: false, error: "Backup contains an invalid project." };
-      for (const key of Object.keys(project as Record<string, unknown>)) if (!allowedProjectKeys.has(key)) return { success: false, error: "Backup contains an unsupported project field." };
+      for (const key of Object.keys(project as unknown as Record<string, unknown>)) if (!allowedProjectKeys.has(key)) return { success: false, error: "Backup contains an unsupported project field." };
       if (typeof (project as any).id !== "string" || !/^[A-Za-z0-9_-]{1,128}$/.test((project as any).id)) return { success: false, error: "Backup contains an invalid project ID." };
       if (typeof (project as any).title !== "string" || (project as any).title.length > 200) return { success: false, error: "Backup contains an invalid project title." };
     }

@@ -60,3 +60,7 @@ npx vercel --prod
 ```
 
 Do not store uploaded files in the Vercel function filesystem. Vercel functions have read-only persistent filesystems; durable uploads should use object storage such as ImageKit.
+
+
+## Vercel runtime
+This project targets Node.js 22.x. The Vercel configuration intentionally does not specify a legacy function runtime; Vercel detects the Node runtime automatically.

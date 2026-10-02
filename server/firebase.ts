@@ -1,7 +1,7 @@
 import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
 import { getAuth, type Auth } from "firebase-admin/auth";
-import { FIREBASE_PROJECT_ID, FIREBASE_SERVICE_ACCOUNT_JSON } from "./env";
+import { FIREBASE_PROJECT_ID, FIREBASE_SERVICE_ACCOUNT_JSON } from "./env.js";
 
 let firestore: Firestore | null = null;
 let auth: Auth | null = null;

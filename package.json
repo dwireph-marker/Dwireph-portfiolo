@@ -11,8 +11,7 @@
     "preview": "vite preview",
     "firebase:rules": "firebase deploy --only firestore:rules,firestore:indexes",
     "firebase:migrate": "tsx scripts/migrate-firebase.ts",
-    "build:vercel": "vite build",
-    "vercel-build": "vite build"
+    "build:vercel": "vite build"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

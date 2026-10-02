@@ -1,4 +1,4 @@
-import { IMAGEKIT_PRIVATE_KEY, IMAGEKIT_URL_ENDPOINT } from "./env";
+import { IMAGEKIT_PRIVATE_KEY, IMAGEKIT_URL_ENDPOINT } from "./env.js";
 
 const IMAGEKIT_MANAGEMENT_ENDPOINT = "https://api.imagekit.io/v1/files";
 
