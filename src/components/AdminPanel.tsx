@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useLoading } from "../context/LoadingContext";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { AdminLogin } from "./admin/AdminLogin";
 import { AdminHeader } from "./admin/AdminHeader";
 import { AdminSidebar, AdminTabId } from "./admin/AdminSidebar";
@@ -23,15 +23,35 @@ import { Loader2, X } from "lucide-react";
 import { useCMS } from "../context/CMSContext";
 
 export default function AdminPanel() {
-  const { setView } = useLoading();
   const { settings: cmsSettings, content: cmsContent, projects: cmsProjects } = useCMS();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // Auth State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [adminEmail, setAdminEmail] = useState<string>("");
 
   // Navigation State
-  const [activeTab, setActiveTab] = useState<AdminTabId>("projects");
+
+  const routeToTab: Record<string, AdminTabId> = {
+    hero: "hero",
+    about: "about",
+    "skills-services": "whatido",
+    projects: "projects",
+    "edited-videos": "videos",
+    experience: "career",
+    contact: "contact",
+    "social-links": "social",
+    "media-library": "media",
+    messages: "messages",
+    navigation: "navigation",
+    "seo-settings": "seo",
+    "backup-logs": "backup",
+    security: "account",
+  };
+
+  const routeSegment = location.pathname.replace(/^\/admin\/?/, "").split("/")[0] || "projects";
+  const activeTab: AdminTabId = routeToTab[routeSegment] || "projects";
 
   // Data State
   const [settings, setSettings] = useState<WebsiteSettings>(cmsSettings as WebsiteSettings);
@@ -153,7 +173,7 @@ export default function AdminPanel() {
             setAdminEmail(user.email);
           }
         }}
-        onBackToSite={() => setView("portfolio")}
+        onBackToSite={() => navigate("/")}
       />
     );
   }
@@ -165,7 +185,7 @@ export default function AdminPanel() {
       <AdminHeader
         adminEmail={adminEmail}
         hasUnsavedChanges={hasUnsavedChanges}
-        onViewWebsite={() => setView("portfolio")}
+        onViewWebsite={() => navigate("/")}
         onLogout={handleLogout}
         statusMessage={statusMessage}
       />
@@ -175,83 +195,35 @@ export default function AdminPanel() {
         {/* Sidebar */}
         <AdminSidebar
           activeTab={activeTab}
-          onSelectTab={(tab) => setActiveTab(tab)}
           unreadMessagesCount={unreadMessagesCount}
         />
 
         {/* Content Workspace Canvas */}
         <main className="flex-1 p-4 lg:p-8 overflow-y-auto bg-[#0d0a14]">
-          {activeTab === "hero" && (
-            <HeroEditorTab
-              content={content}
-              onSave={handleSaveContent}
-              onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)}
-            />
-          )}
-
-          {activeTab === "about" && (
-            <AboutEditorTab content={content} onSave={handleSaveContent} />
-          )}
-
-          {activeTab === "whatido" && (
-            <ServicesEditorTab content={content} onSave={handleSaveContent} />
-          )}
-
-          {activeTab === "projects" && (
-            <ProjectsEditorTab
-              key="projects-tab"
-              projects={projects}
-              onRefresh={loadAllData}
-              onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)}
-              initialTab="projects"
-            />
-          )}
-
-          {activeTab === "videos" && (
-            <ProjectsEditorTab
-              key="videos-tab"
-              projects={projects}
-              onRefresh={loadAllData}
-              onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)}
-              initialTab="videos"
-            />
-          )}
-
-          {activeTab === "career" && (
-            <CareerEditorTab content={content} onSave={handleSaveContent} />
-          )}
-
-          {activeTab === "contact" && (
-            <ContactEditorTab content={content} onSave={handleSaveContent} />
-          )}
-
-          {activeTab === "social" && (
-            <SocialLinksTab content={content} onSave={handleSaveContent} />
-          )}
-
-          {activeTab === "media" && <MediaLibraryTab />}
-
-          {activeTab === "messages" && (
-            <MessagesTab messages={messages} onRefresh={loadAllData} />
-          )}
-
-          {activeTab === "navigation" && (
-            <NavigationEditorTab settings={settings} onSave={handleSaveSettings} />
-          )}
-
-          {activeTab === "seo" && (
-            <SettingsTab
-              settings={settings}
-              onSave={handleSaveSettings}
-              onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)}
-            />
-          )}
-
-          {activeTab === "backup" && (
-            <BackupLogsTab logs={auditLogs} onRefreshAll={loadAllData} />
-          )}
-
-          {activeTab === "account" && <AccountTab adminEmail={adminEmail} />}
+          <Routes>
+            <Route index element={<Navigate to="projects" replace />} />
+            <Route path="hero" element={
+              <HeroEditorTab content={content} onSave={handleSaveContent} onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)} />
+            } />
+            <Route path="about" element={<AboutEditorTab content={content} onSave={handleSaveContent} />} />
+            <Route path="skills-services" element={<ServicesEditorTab content={content} onSave={handleSaveContent} />} />
+            <Route path="projects" element={
+              <ProjectsEditorTab key="projects-route" projects={projects} onRefresh={loadAllData} onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)} initialTab="projects" />
+            } />
+            <Route path="edited-videos" element={
+              <ProjectsEditorTab key="videos-route" projects={projects} onRefresh={loadAllData} onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)} initialTab="videos" />
+            } />
+            <Route path="experience" element={<CareerEditorTab content={content} onSave={handleSaveContent} />} />
+            <Route path="contact" element={<ContactEditorTab content={content} onSave={handleSaveContent} />} />
+            <Route path="social-links" element={<SocialLinksTab content={content} onSave={handleSaveContent} />} />
+            <Route path="media-library" element={<MediaLibraryTab />} />
+            <Route path="messages" element={<MessagesTab messages={messages} onRefresh={loadAllData} />} />
+            <Route path="navigation" element={<NavigationEditorTab settings={settings} onSave={handleSaveSettings} />} />
+            <Route path="seo-settings" element={<SettingsTab settings={settings} onSave={handleSaveSettings} onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)} />} />
+            <Route path="backup-logs" element={<BackupLogsTab logs={auditLogs} onRefreshAll={loadAllData} />} />
+            <Route path="security" element={<AccountTab adminEmail={adminEmail} />} />
+            <Route path="*" element={<Navigate to="projects" replace />} />
+          </Routes>
         </main>
       </div>
 

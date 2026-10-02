@@ -164,7 +164,7 @@ async function initializeAdmin() {
   if ("passwordHash" in legacy || "salt" in legacy) {
     await primaryRef.update({ passwordHash: null, salt: null });
   }
-  console.log(`[AUTH] Firebase Auth administrator verified: ${user.uid} (${user.email || "no-email"}).`);
+  console.log("[AUTH] Firebase Auth administrator verified.");
 }
 
 
@@ -681,6 +681,6 @@ export const serverDB = {
     if (!firebaseUid) throw new Error("Authenticated Firebase UID is required.");
     const admin = await getDoc<{ email?: string; role?: string; firebaseUid?: string }>("admins", firebaseUid);
     if (!admin || !["admin", "superadmin"].includes(admin.role || "")) throw new Error("Database error");
-    return { email: admin.email || "", role: admin.role as "admin" | "superadmin", firebaseUid: admin.firebaseUid || firebaseUid };
+    return { email: admin.email || "", role: admin.role as "admin" | "superadmin" };
   },
 };

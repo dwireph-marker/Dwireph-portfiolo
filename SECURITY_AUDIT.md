@@ -50,3 +50,12 @@ The current codebase has been hardened with the following changes:
 ### Verification note
 
 The source-level security checks were completed. A full production build/dependency audit could not be completed in this environment because the uploaded archive did not contain `node_modules` and package installation could not fully complete due external registry/network timeouts. Run `npm ci`, `npm run build`, `npm audit --omit=dev`, and your deployment smoke tests before release.
+
+## Data exposure hardening (latest review)
+
+- Public project listing excludes unpublished projects.
+- Public project detail requests return 404 for unpublished projects unless the requester has a valid current admin role.
+- Draft listing authorization re-checks the current UID-keyed Firestore admin record rather than trusting only an existing session.
+- Backup export is restricted to superadmin, because backups contain messages and audit logs.
+- Firebase client rules are fail-closed for every collection; the browser has no direct Firestore access. The server uses Firebase Admin SDK, so server-side authentication/authorization remains the authoritative boundary.
+- Firebase Auth credentials, service-account JSON, session secret, Gemini secret, and ImageKit private key are server-only environment variables and are not referenced by client code.

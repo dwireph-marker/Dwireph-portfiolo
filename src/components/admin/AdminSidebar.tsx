@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import {
   Sparkles,
   User,
@@ -35,12 +36,12 @@ export type AdminTabId =
 
 interface AdminSidebarProps {
   activeTab: AdminTabId;
-  onSelectTab: (tab: AdminTabId) => void;
   unreadMessagesCount: number;
 }
 
 interface NavItem {
   id: AdminTabId;
+  path: string;
   label: string;
   icon: React.ElementType;
   badge?: number | string;
@@ -49,27 +50,26 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   // Website Content
-  { id: "hero", label: "Home / Hero", icon: Sparkles, category: "content" },
-  { id: "about", label: "About Me", icon: User, category: "content" },
-  { id: "whatido", label: "Skills / Services", icon: Layers, category: "content" },
-  { id: "projects", label: "My Projects", icon: FolderKanban, category: "content" },
-  { id: "videos", label: "My Edited Videos", icon: Film, category: "content" },
-  { id: "career", label: "Experience", icon: Briefcase, category: "content" },
-  { id: "contact", label: "Contact Info", icon: Mail, category: "content" },
-  { id: "social", label: "Social Links", icon: Share2, category: "content" },
+  { id: "hero", path: "hero", label: "Home / Hero", icon: Sparkles, category: "content" },
+  { id: "about", path: "about", label: "About Me", icon: User, category: "content" },
+  { id: "whatido", path: "skills-services", label: "Skills / Services", icon: Layers, category: "content" },
+  { id: "projects", path: "projects", label: "My Projects", icon: FolderKanban, category: "content" },
+  { id: "videos", path: "edited-videos", label: "My Edited Videos", icon: Film, category: "content" },
+  { id: "career", path: "experience", label: "Experience", icon: Briefcase, category: "content" },
+  { id: "contact", path: "contact", label: "Contact Info", icon: Mail, category: "content" },
+  { id: "social", path: "social-links", label: "Social Links", icon: Share2, category: "content" },
 
   // System & Management
-  { id: "media", label: "Media Library", icon: Image, category: "system" },
-  { id: "messages", label: "Messages / Inbox", icon: Inbox, category: "system" },
-  { id: "navigation", label: "Navigation Bar", icon: Compass, category: "system" },
-  { id: "seo", label: "SEO & Settings", icon: Settings, category: "system" },
-  { id: "backup", label: "Backup & Logs", icon: Database, category: "system" },
-  { id: "account", label: "Security & Pass", icon: KeyRound, category: "system" },
+  { id: "media", path: "media-library", label: "Media Library", icon: Image, category: "system" },
+  { id: "messages", path: "messages", label: "Messages / Inbox", icon: Inbox, category: "system" },
+  { id: "navigation", path: "navigation", label: "Navigation Bar", icon: Compass, category: "system" },
+  { id: "seo", path: "seo-settings", label: "SEO & Settings", icon: Settings, category: "system" },
+  { id: "backup", path: "backup-logs", label: "Backup & Logs", icon: Database, category: "system" },
+  { id: "account", path: "security", label: "Security & Pass", icon: KeyRound, category: "system" },
 ];
 
 export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   activeTab,
-  onSelectTab,
   unreadMessagesCount,
 }) => {
   const contentItems = navItems.filter((i) => i.category === "content");
@@ -84,10 +84,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           const isActive = activeTab === item.id;
           const isMessages = item.id === "messages";
           return (
-            <button
+            <NavLink
               key={item.id}
-              onClick={() => onSelectTab(item.id)}
-              type="button"
+              to={item.path}
+              end
               className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all shrink-0 cursor-pointer ${
                 isActive
                   ? "bg-[#7c3aed] text-white shadow-md shadow-[#7c3aed]/30 font-semibold"
@@ -101,7 +101,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                   {unreadMessagesCount}
                 </span>
               )}
-            </button>
+            </NavLink>
           );
         })}
       </div>
@@ -120,11 +120,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                 const Icon = item.icon;
                 const isActive = activeTab === item.id;
                 return (
-                  <button
+                  <NavLink
                     key={item.id}
-                    onClick={() => onSelectTab(item.id)}
-                    type="button"
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                    to={item.path}
+                    end
+                          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                       isActive
                         ? "bg-[#7c3aed] text-white shadow-md shadow-[#7c3aed]/25 font-semibold"
                         : "text-[#aa9abf] hover:bg-[#1f1833] hover:text-white"
@@ -135,7 +135,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                       <span>{item.label}</span>
                     </div>
                     {isActive && <ChevronRight size={14} className="opacity-75" />}
-                  </button>
+                  </NavLink>
                 );
               })}
             </nav>
@@ -152,11 +152,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                 const isActive = activeTab === item.id;
                 const isMessages = item.id === "messages";
                 return (
-                  <button
+                  <NavLink
                     key={item.id}
-                    onClick={() => onSelectTab(item.id)}
-                    type="button"
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                    to={item.path}
+                    end
+                          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                       isActive
                         ? "bg-[#7c3aed] text-white shadow-md shadow-[#7c3aed]/25 font-semibold"
                         : "text-[#aa9abf] hover:bg-[#1f1833] hover:text-white"
@@ -173,7 +173,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                       </span>
                     )}
                     {isActive && !isMessages && <ChevronRight size={14} className="opacity-75" />}
-                  </button>
+                  </NavLink>
                 );
               })}
             </nav>

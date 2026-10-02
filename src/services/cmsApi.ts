@@ -290,24 +290,19 @@ class CMSApiService {
     if (!res.ok || !Array.isArray(data.media)) throw new Error("database error");
     return data.media;
   }
-  async uploadMedia(file: File, title?: string) {
+  async registerMedia(payload: { url: string; fileId: string; filePath?: string; thumbnailUrl?: string; name: string; mimeType: string; size: number; title?: string }) {
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      if (title) formData.append("title", title);
-      const headers = this.getHeaders(false);
-      const res = await fetch("/api/media/upload", {
+      const res = await fetch("/api/media/register", {
         method: "POST",
-        headers,
-        body: formData,
+        headers: this.getHeaders(),
+        credentials: "include",
+        body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        return { success: true, url: data.url, media: data.media };
-      }
-      return { success: false, error: data.error || "Upload failed." };
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) return { success: true, url: data.url, poster: data.poster, media: data.media };
+      return { success: false, error: data.error || "Failed to register media." };
     } catch {
-      return { success: false, error: "Network error during media upload." };
+      return { success: false, error: "Network error registering media." };
     }
   }
   async deleteMedia(id: string) {

@@ -2,17 +2,17 @@ import express from "express";
 import path from "path";
 import crypto from "node:crypto";
 import cookieParser from "cookie-parser";
-import multer from "multer";
-import { createServer as createViteServer } from "vite";
 import "./server/env";
 import { serverDB, ensureDatabaseReady } from "./server/db";
-import { getImageKitVideoPlaybackUrl, uploadToImageKit } from "./server/imagekit";
+import { getImageKitVideoPlaybackUrl } from "./server/imagekit";
+import { IMAGEKIT_PRIVATE_KEY, IMAGEKIT_PUBLIC_KEY, IMAGEKIT_URL_ENDPOINT } from "./server/env";
 
 const app = express();
 app.set("trust proxy", process.env.TRUST_PROXY_HOPS ? Number(process.env.TRUST_PROXY_HOPS) : 0);
 
 const PORT = Number(process.env.PORT) || 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const IS_VERCEL = process.env.VERCEL === "1";
 
 function getExpectedOrigin(req: express.Request): string | null {
   const configured = process.env.APP_ORIGIN?.trim().replace(/\/$/, "");
@@ -76,43 +76,6 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: "512kb", strict: true }));
 app.use(express.urlencoded({ extended: false, limit: "256kb" }));
 app.use(cookieParser());
-const storage = multer.memoryStorage();
-const MAX_UPLOAD_BYTES = 500 * 1024 * 1024;
-const allowedMimeTypes = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-  "video/mp4",
-  "video/webm",
-  "video/quicktime",
-  "video/x-m4v",
-];
-const upload = multer({
-  storage,
-  limits: { fileSize: MAX_UPLOAD_BYTES, files: 1, fields: 5, fieldSize: 32 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    if (allowedMimeTypes.includes(file.mimetype)) cb(null, true);
-    else cb(new Error(`Unsupported file type: ${file.mimetype}`));
-  },
-});
-
-function detectFileType(buffer: Buffer): "image/jpeg" | "image/png" | "image/webp" | "image/gif" | "video/mp4" | "video/webm" | "video/quicktime" | null {
-  if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return "image/jpeg";
-  if (buffer.length >= 8 && buffer.subarray(0, 8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]))) return "image/png";
-  if (buffer.length >= 12 && buffer.toString("ascii", 0, 4) === "RIFF" && buffer.toString("ascii", 8, 12) === "WEBP") return "image/webp";
-  if (buffer.length >= 6 && (buffer.toString("ascii", 0, 6) === "GIF87a" || buffer.toString("ascii", 0, 6) === "GIF89a")) return "image/gif";
-  if (buffer.length >= 4 && buffer.subarray(0, 4).equals(Buffer.from([0x1a, 0x45, 0xdf, 0xa3]))) {
-    const head = buffer.subarray(0, Math.min(buffer.length, 64 * 1024)).toString("ascii");
-    if (head.includes("webm")) return "video/webm";
-  }
-  if (buffer.length >= 12 && buffer.toString("ascii", 4, 8) === "ftyp") {
-    const brand = buffer.toString("ascii", 8, 12);
-    if (["qt  ", "qt  "].includes(brand)) return "video/quicktime";
-    if (["isom", "iso2", "mp41", "mp42", "avc1", "MSNV", "M4V "].includes(brand)) return "video/mp4";
-  }
-  return null;
-}
 const loginAttempts = new Map<
   string,
   { count: number; firstFailedAt: number; lockedUntil?: number }
@@ -500,9 +463,17 @@ app.put("/api/content", requireAuth, async (req, res) => {
 });
 app.get("/api/projects", async (req, res) => {
   try {
-    const token = getSessionToken(req);
-    const isAdmin = Boolean(token && (await serverDB.verifySession(token)));
-    const includeDrafts = req.query.all === "true" && isAdmin;
+    let includeDrafts = false;
+    if (req.query.all === "true") {
+      const token = getSessionToken(req);
+      const session = token ? await serverDB.verifySession(token) : null;
+      if (!session?.firebaseUid) return res.status(401).json({ success: false, error: "Unauthorized." });
+      const profile = await serverDB.getAdminProfile(session.firebaseUid);
+      if (!profile || !["admin", "superadmin"].includes(profile.role)) {
+        return res.status(403).json({ success: false, error: "Forbidden." });
+      }
+      includeDrafts = true;
+    }
     const projects = await serverDB.getProjects(includeDrafts);
     res.json({ success: true, projects });
   } catch {
@@ -514,6 +485,18 @@ app.get("/api/projects/:id", async (req, res) => {
   if (!project) {
     return res.status(404).json({ success: false, error: "Project not found" });
   }
+
+  // Draft projects must never be exposed through a public detail endpoint.
+  if (project.published === false) {
+    const token = getSessionToken(req);
+    const session = token ? await serverDB.verifySession(token) : null;
+    if (!session?.firebaseUid) return res.status(404).json({ success: false, error: "Project not found" });
+    const profile = await serverDB.getAdminProfile(session.firebaseUid);
+    if (!profile || !["admin", "superadmin"].includes(profile.role)) {
+      return res.status(404).json({ success: false, error: "Project not found" });
+    }
+  }
+
   return res.json({ success: true, project });
 });
 app.post("/api/projects", requireAuth, async (req, res) => {
@@ -608,67 +591,61 @@ app.get("/api/media", requireAuth, async (_req, res) => {
       .json({ success: false, error: "Failed to fetch media library" });
   }
 });
-app.post("/api/media/upload", requireAuth, (req, res) => {
-  const session = (req as express.Request & { adminSession?: { email?: string } }).adminSession;
-  const key = session?.email || req.ip || "unknown";
-  const uploadLimit = checkUploadRateLimit(key);
-  if (!uploadLimit.allowed) {
-    res.setHeader("Retry-After", String(uploadLimit.retryAfterSeconds));
-    return res.status(429).json({ success: false, error: "Upload limit reached. Please try again later." });
+app.get("/api/media/upload-auth", requireAuth, (req, res) => {
+  if (!IMAGEKIT_PRIVATE_KEY || !IMAGEKIT_PUBLIC_KEY || !IMAGEKIT_URL_ENDPOINT) {
+    return res.status(503).json({ success: false, error: "ImageKit upload is not configured." });
   }
-
-  upload.single("file")(req, res, async (err) => {
-    if (err) return res.status(400).json({ success: false, error: "Invalid upload. Check the file type and size." });
-    if (!req.file) return res.status(400).json({ success: false, error: "No file uploaded." });
-
-    const detectedMime = detectFileType(req.file.buffer);
-    if (!detectedMime || !allowedMimeTypes.includes(detectedMime) || (detectedMime.startsWith("image/") !== req.file.mimetype.startsWith("image/"))) {
-      return res.status(400).json({ success: false, error: "The file contents do not match an allowed media type." });
-    }
-
-    const isVideo = detectedMime.startsWith("video/");
-    if (isVideo && !["video/mp4", "video/webm"].includes(detectedMime)) {
-      return res.status(400).json({ success: false, error: "For reliable browser playback, upload MP4 or WebM video." });
-    }
-
-    try {
-      await ensureDatabaseReady();
-
-      // All new admin uploads are stored in ImageKit. The private key never reaches the browser.
-      const imagekit = await uploadToImageKit({
-        buffer: req.file.buffer,
-        originalName: req.file.originalname,
-        mimeType: detectedMime,
-        folder: isVideo ? "/portfolio/videos" : "/portfolio/images",
-      });
-
-      const mediaItem = await serverDB.addMedia({
-        filename: req.file.originalname.slice(0, 255),
-        url: isVideo ? getImageKitVideoPlaybackUrl(imagekit.url) : imagekit.url,
-        mediaType: isVideo ? "video" : "image",
-        mimeType: detectedMime,
-        size: req.file.size,
-        title: typeof req.body.title === "string" ? req.body.title.trim().slice(0, 200) : req.file.originalname.slice(0, 200),
-        fileId: imagekit.fileId,
-        filePath: imagekit.filePath,
-        thumbnailUrl: imagekit.thumbnailUrl,
-      });
-
-      return res.status(201).json({
-        success: true,
-        media: mediaItem,
-        url: isVideo ? getImageKitVideoPlaybackUrl(imagekit.url) : imagekit.url,
-        poster: isVideo ? imagekit.thumbnailUrl : undefined,
-      });
-    } catch (error) {
-      console.error("[IMAGEKIT] Admin media upload failed:", error instanceof Error ? error.message : error);
-      return res.status(502).json({
-        success: false,
-        error: error instanceof Error ? error.message : "Unable to upload media to ImageKit.",
-      });
-    }
-  });
+  const token = crypto.randomUUID();
+  const expire = Math.floor(Date.now() / 1000) + 30 * 60;
+  const signature = crypto.createHmac("sha1", IMAGEKIT_PRIVATE_KEY).update(token + expire).digest("hex");
+  res.setHeader("Cache-Control", "no-store");
+  return res.json({ success: true, token, expire, signature, publicKey: IMAGEKIT_PUBLIC_KEY, urlEndpoint: IMAGEKIT_URL_ENDPOINT });
 });
+
+app.post("/api/media/register", requireAuth, async (req, res) => {
+  try {
+    const body = req.body && typeof req.body === "object" ? req.body as Record<string, unknown> : {};
+    const url = typeof body.url === "string" ? body.url.trim() : "";
+    const fileId = typeof body.fileId === "string" ? body.fileId.trim() : "";
+    const filePath = typeof body.filePath === "string" ? body.filePath.trim() : "";
+    const thumbnailUrl = typeof body.thumbnailUrl === "string" ? body.thumbnailUrl.trim() : "";
+    const name = typeof body.name === "string" ? body.name.trim().slice(0, 255) : "";
+    const mimeType = typeof body.mimeType === "string" ? body.mimeType.trim().toLowerCase() : "";
+    const size = Number(body.size);
+    const title = typeof body.title === "string" ? body.title.trim().slice(0, 200) : name.slice(0, 200);
+    if (!url || !fileId || !name || !mimeType || !Number.isFinite(size) || size < 1 || size > 500 * 1024 * 1024) {
+      return res.status(400).json({ success: false, error: "Invalid uploaded media metadata." });
+    }
+    const parsed = new URL(url);
+    const endpoint = new URL(IMAGEKIT_URL_ENDPOINT);
+    if (parsed.protocol !== "https:" || parsed.origin !== endpoint.origin) {
+      return res.status(400).json({ success: false, error: "Uploaded media URL is not from the configured ImageKit endpoint." });
+    }
+    const isVideo = mimeType.startsWith("video/");
+    if (isVideo && !["video/mp4", "video/webm"].includes(mimeType)) {
+      return res.status(400).json({ success: false, error: "Only MP4 and WebM videos are supported." });
+    }
+    if (!isVideo && !["image/jpeg", "image/png", "image/webp", "image/gif"].includes(mimeType)) {
+      return res.status(400).json({ success: false, error: "Unsupported image format." });
+    }
+    const mediaItem = await serverDB.addMedia({
+      filename: name,
+      url: isVideo ? getImageKitVideoPlaybackUrl(url) : url,
+      mediaType: isVideo ? "video" : "image",
+      mimeType,
+      size,
+      title: title || name.slice(0, 200),
+      fileId,
+      filePath: filePath || undefined,
+      thumbnailUrl: thumbnailUrl || undefined,
+    });
+    return res.status(201).json({ success: true, media: mediaItem, url: mediaItem.url, poster: isVideo ? thumbnailUrl || undefined : undefined });
+  } catch (error) {
+    console.error("[IMAGEKIT] Media registration failed:", error instanceof Error ? error.message : error);
+    return res.status(400).json({ success: false, error: "Unable to register the uploaded media." });
+  }
+});
+
 app.delete("/api/media/:id", requireAuth, async (req, res) => {
   const result = await serverDB.deleteMedia(req.params.id);
   if (!result.success) {
@@ -767,7 +744,7 @@ app.delete("/api/contact/:id", requireAuth, async (req, res) => {
 app.get("/api/audit-logs", requireAuth, async (_req, res) => {
   res.json({ success: true, logs: await serverDB.getAuditLogs() });
 });
-app.get("/api/backup/export", requireAuth, async (_req, res) => {
+app.get("/api/backup/export", requireAuth, requireSuperAdmin, async (_req, res) => {
   const backup = await serverDB.exportBackup();
   res.setHeader(
     "Content-Disposition",
@@ -798,6 +775,7 @@ async function startServer() {
   // Start the HTTP server immediately. Firestore initialization runs in the background;
   // ImageKit is used only when an administrator explicitly uploads media.
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -825,4 +803,9 @@ async function startServer() {
     });
   });
 }
-startServer();
+export { app };
+export default app;
+
+if (!IS_VERCEL) {
+  void startServer();
+}

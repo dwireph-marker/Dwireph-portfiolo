@@ -5,6 +5,7 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import React, { useState, useEffect } from "react";
 import { Image as ImageIcon, Film, Upload, Trash2, Copy, Check, Search, AlertTriangle, Play, Eye, X, CheckCircle2, Loader2, } from "lucide-react";
 import { cmsApi } from "../../../services/cmsApi";
+import { mediaStorage } from "../../../services/mediaStorage";
 export const MediaLibraryTab = ({ onSelectMedia, isPickerMode = false, }) => {
     const [mediaList, setMediaList] = useState([]);
     const [filterType, setFilterType] = useState("all");
@@ -16,6 +17,7 @@ export const MediaLibraryTab = ({ onSelectMedia, isPickerMode = false, }) => {
     const [pendingDeleteMedia, setPendingDeleteMedia] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [feedback, setFeedback] = useState(null);
+    const [uploadStatus, setUploadStatus] = useState("");
     const showNotification = (text, type = "success") => {
         setFeedback({ type, text });
         setTimeout(() => setFeedback(null), 4500);
@@ -40,8 +42,8 @@ export const MediaLibraryTab = ({ onSelectMedia, isPickerMode = false, }) => {
         setIsUploading(true);
         setDeleteWarning(null);
         try {
-            const res = await cmsApi.uploadMedia(file, file.name);
-            if (res.success && res.media) {
+            const res = await mediaStorage.uploadMedia(file, (status) => setUploadStatus(status), file.name);
+            if (res.success) {
                 await loadMedia();
                 showNotification(`Media file "${file.name}" uploaded successfully.`, "success");
                 if (isPickerMode && onSelectMedia && res.url) {
@@ -57,6 +59,7 @@ export const MediaLibraryTab = ({ onSelectMedia, isPickerMode = false, }) => {
         }
         finally {
             setIsUploading(false);
+            setUploadStatus("");
             e.target.value = "";
         }
     };

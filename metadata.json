@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Moncy Yohannan Portfolio",
+  "description": "A highly interactive, creative portfolio website built with React, Three.js, and GSAP showcasing 3D experiences, assets, and design work.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

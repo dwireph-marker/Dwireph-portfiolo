@@ -18,6 +18,7 @@ export const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID?.trim() || ""
 export const FIREBASE_SERVICE_ACCOUNT_JSON = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim() || "";
 export const FIREBASE_WEB_API_KEY = process.env.FIREBASE_WEB_API_KEY?.trim() || "";
 export const IMAGEKIT_PRIVATE_KEY = process.env.IMAGEKIT_PRIVATE_KEY?.trim() || "";
+export const IMAGEKIT_PUBLIC_KEY = process.env.IMAGEKIT_PUBLIC_KEY?.trim() || "";
 export const IMAGEKIT_URL_ENDPOINT = process.env.IMAGEKIT_URL_ENDPOINT?.trim().replace(/\/$/, "") || "";
 
 
