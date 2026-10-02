@@ -69,7 +69,8 @@ async function writeCollection(
   let batch = firestore.batch();
   let count = 0;
   for (const item of items) {
-    batch.set(firestore.collection(collection).doc(item.id), cleanForFirestore(item.data), { merge: false });
+    const cleanedData = cleanForFirestore(item.data) as Record<string, unknown>;
+    batch.set(firestore.collection(collection).doc(item.id), cleanedData, { merge: false });
     count += 1;
     if (count === 450) {
       await batch.commit();
@@ -558,7 +559,7 @@ export const serverDB = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: email.trim(), password, returnSecureToken: true }),
     });
-    const data = await response.json().catch(() => ({}));
+    const data: { idToken?: unknown; localId?: unknown } = await response.json().catch(() => ({}));
     if (!response.ok || typeof data.idToken !== "string" || typeof data.localId !== "string") {
       return null;
     }
