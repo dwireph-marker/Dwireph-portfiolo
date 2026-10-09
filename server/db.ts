@@ -46,6 +46,26 @@ async function readSeed(): Promise<CMSDatabase> {
   return parsed;
 }
 
+// Keep a validated local snapshot available for public pages if Firestore is
+// temporarily unavailable or has not been configured in the deployment.
+let publicSeedPromise: Promise<CMSDatabase> | null = null;
+async function getPublicSeed(): Promise<CMSDatabase> {
+  if (!publicSeedPromise) {
+    publicSeedPromise = readSeed().catch((error) => {
+      publicSeedPromise = null;
+      throw error;
+    });
+  }
+  return publicSeedPromise;
+}
+
+function logPublicReadFallback(section: string, error: unknown) {
+  console.error(
+    `[CMS] Firestore unavailable while loading ${section}; serving bundled seed data instead:`,
+    error instanceof Error ? error.stack || error.message : error,
+  );
+}
+
 async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
   let timer: NodeJS.Timeout | undefined;
   try {
@@ -301,10 +321,15 @@ export const serverDB = {
   },
 
   async getSettings() {
-    await ensureDatabaseReady();
-    const value = await getDoc<WebsiteSettings>("cms", "settings");
-    if (!value) throw new Error("Database error");
-    return value;
+    try {
+      await ensureDatabaseReady();
+      const value = await getDoc<WebsiteSettings>("cms", "settings");
+      if (!value) throw new Error("Required Firestore document cms/settings is missing.");
+      return value;
+    } catch (error) {
+      logPublicReadFallback("settings", error);
+      return (await getPublicSeed()).settings;
+    }
   },
   async updateSettings(settings: WebsiteSettings) {
     await ensureDatabaseReady();
@@ -313,10 +338,15 @@ export const serverDB = {
     return settings;
   },
   async getContent() {
-    await ensureDatabaseReady();
-    const value = await getDoc<WebsiteContent>("cms", "content");
-    if (!value) throw new Error("Database error");
-    return value;
+    try {
+      await ensureDatabaseReady();
+      const value = await getDoc<WebsiteContent>("cms", "content");
+      if (!value) throw new Error("Required Firestore document cms/content is missing.");
+      return value;
+    } catch (error) {
+      logPublicReadFallback("content", error);
+      return (await getPublicSeed()).content;
+    }
   },
   async updateContent(content: WebsiteContent) {
     await ensureDatabaseReady();
@@ -325,8 +355,14 @@ export const serverDB = {
     return content;
   },
   async getProjects(includeDrafts = false) {
-    await ensureDatabaseReady();
-    const projects = (await listDocs<ProjectItem>("projects")).sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+    let projects: ProjectItem[];
+    try {
+      await ensureDatabaseReady();
+      projects = (await listDocs<ProjectItem>("projects")).sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+    } catch (error) {
+      logPublicReadFallback("projects", error);
+      projects = (await getPublicSeed()).projects;
+    }
     return includeDrafts ? projects : projects.filter((project) => project.published !== false);
   },
   async getProject(id: string) {
