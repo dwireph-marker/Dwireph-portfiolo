@@ -9,3 +9,4 @@ coverage/
 
 secrets/*
 !secrets/.gitkeep
+portfiolo.zip
