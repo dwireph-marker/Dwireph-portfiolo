@@ -379,8 +379,15 @@ app.get("/api/auth/me", async (req, res) => {
     if (!session?.firebaseUid) return res.json({ authenticated: false });
     return res.json({ authenticated: true, user: await serverDB.getAdminProfile(session.firebaseUid) });
   } catch (error) {
-    console.error("[AUTH] /api/auth/me failed:", error instanceof Error ? error.stack || error.message : error);
-    return res.status(503).json({ authenticated: false, error: "Authentication service temporarily unavailable." });
+    // This endpoint is a passive auth-state probe called on page load. A stale
+    // session cookie plus a temporary Firestore outage must not make the whole
+    // public site noisy or appear broken. Fail closed: clear the unusable
+    // cookies and report unauthenticated; protected endpoints still validate
+    // every session against Firestore and continue to fail closed.
+    console.error("[AUTH] /api/auth/me could not validate the session:", error instanceof Error ? error.message : error);
+    res.clearCookie("admin_session", { path: "/", sameSite: "strict", secure: IS_PRODUCTION });
+    res.clearCookie("admin_csrf", { path: "/", sameSite: "strict", secure: IS_PRODUCTION });
+    return res.status(200).json({ authenticated: false, sessionCheckUnavailable: true });
   }
 });
 app.post("/api/auth/logout", async (req, res) => {

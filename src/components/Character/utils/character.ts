@@ -59,7 +59,7 @@ const setCharacter = (
               if (resolved) return;
               resolved = true;
               clearTimeout(timeout);
-              console.log("Could not load binary GLTF model. Gracefully switching to SVG fallback.");
+              console.warn("Character model could not be loaded; using the built-in SVG fallback. Check that /models/character.glb is a valid GLB asset.");
               resolve(null);
             }
           );
