@@ -3,17 +3,23 @@ import dotenv from "dotenv";
 dotenv.config();
 
 function required(name: string, value?: string) {
-  if (!value) throw new Error(`[ENV] Missing required environment variable: ${name}`);
+  if (!value)
+    throw new Error(`[ENV] Missing required environment variable: ${name}`);
   return value;
 }
 
 export const SUPERADMIN_UID = process.env.SUPERADMIN_UID?.trim() || "";
-export const SESSION_SECRET = required("SESSION_SECRET", process.env.SESSION_SECRET);
+export const SESSION_SECRET = required(
+  "SESSION_SECRET",
+  process.env.SESSION_SECRET,
+);
 export const APP_ORIGIN = process.env.APP_ORIGIN?.trim() || "";
 
-if (SESSION_SECRET.length < 32) throw new Error("[ENV] SESSION_SECRET must be at least 32 characters.");
+if (SESSION_SECRET.length < 32)
+  throw new Error("[ENV] SESSION_SECRET must be at least 32 characters.");
 
-export const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID?.trim() || "";
+export const FIREBASE_PROJECT_ID =
+  process.env.FIREBASE_PROJECT_ID?.trim() || "";
 
 // Vercel-friendly Firebase Admin configuration. Prefer one JSON secret, but also
 // support separate service-account variables because multiline JSON is easy to
@@ -21,7 +27,8 @@ export const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID?.trim() || ""
 const FIREBASE_CLIENT_EMAIL = process.env.FIREBASE_CLIENT_EMAIL?.trim() || "";
 const FIREBASE_PRIVATE_KEY = process.env.FIREBASE_PRIVATE_KEY || "";
 
-export const FIREBASE_SERVICE_ACCOUNT_JSON = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim() ||
+export const FIREBASE_SERVICE_ACCOUNT_JSON =
+  process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim() ||
   (FIREBASE_PROJECT_ID && FIREBASE_CLIENT_EMAIL && FIREBASE_PRIVATE_KEY
     ? JSON.stringify({
         type: "service_account",
@@ -30,11 +37,14 @@ export const FIREBASE_SERVICE_ACCOUNT_JSON = process.env.FIREBASE_SERVICE_ACCOUN
         private_key: FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
       })
     : "");
-export const FIREBASE_WEB_API_KEY = process.env.FIREBASE_WEB_API_KEY?.trim() || "";
-export const IMAGEKIT_PRIVATE_KEY = process.env.IMAGEKIT_PRIVATE_KEY?.trim() || "";
-export const IMAGEKIT_PUBLIC_KEY = process.env.IMAGEKIT_PUBLIC_KEY?.trim() || "";
-export const IMAGEKIT_URL_ENDPOINT = process.env.IMAGEKIT_URL_ENDPOINT?.trim().replace(/\/$/, "") || "";
-
+export const FIREBASE_WEB_API_KEY =
+  process.env.FIREBASE_WEB_API_KEY?.trim() || "";
+export const IMAGEKIT_PRIVATE_KEY =
+  process.env.IMAGEKIT_PRIVATE_KEY?.trim() || "";
+export const IMAGEKIT_PUBLIC_KEY =
+  process.env.IMAGEKIT_PUBLIC_KEY?.trim() || "";
+export const IMAGEKIT_URL_ENDPOINT =
+  process.env.IMAGEKIT_URL_ENDPOINT?.trim().replace(/\/$/, "") || "";
 
 // Do not crash the entire Vercel function during module import when Firebase
 // Admin credentials are absent. Public CMS endpoints can serve the bundled seed
