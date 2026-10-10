@@ -2,10 +2,12 @@ import * as THREE from "three";
 import { DRACOLoader, GLTF, GLTFLoader } from "three-stdlib";
 import { setCharTimeline, setAllTimeline } from "../../utils/GsapScroll";
 
+let hasWarnedCharacterFallback = false;
+
 const setCharacter = (
   renderer: THREE.WebGLRenderer,
   scene: THREE.Scene,
-  camera: THREE.PerspectiveCamera
+  camera: THREE.PerspectiveCamera,
 ) => {
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
@@ -59,9 +61,14 @@ const setCharacter = (
               if (resolved) return;
               resolved = true;
               clearTimeout(timeout);
-              console.warn("Character model could not be loaded; using the built-in SVG fallback. Check that /models/character.glb is a valid GLB asset.");
+              if (!hasWarnedCharacterFallback) {
+                hasWarnedCharacterFallback = true;
+                console.warn(
+                  "Character model could not be loaded; using the built-in SVG fallback. Verify public/models/character.glb if the 3D model is required.",
+                );
+              }
               resolve(null);
-            }
+            },
           );
         } catch (err) {
           if (!resolved) {

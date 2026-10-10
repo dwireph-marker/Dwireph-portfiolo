@@ -46,8 +46,9 @@ export const IMAGEKIT_PUBLIC_KEY =
 export const IMAGEKIT_URL_ENDPOINT =
   process.env.IMAGEKIT_URL_ENDPOINT?.trim().replace(/\/$/, "") || "";
 
-// Do not crash the entire Vercel function during module import when Firebase
-// Admin credentials are absent. Public CMS endpoints can serve the bundled seed
-// data through server/db.ts; database writes and protected admin actions still
-// fail closed when Firebase credentials are unavailable. Configure a service
-// account in Vercel to enable persistent CMS/admin operations.
+// Public CMS reads must remain available even if the optional admin bootstrap
+// configuration is incomplete. Protected authentication routes fail closed when
+// the required admin/session configuration is missing.
+if (!FIREBASE_SERVICE_ACCOUNT_JSON) {
+  throw new Error("[ENV] FIREBASE_SERVICE_ACCOUNT_JSON is required.");
+}
