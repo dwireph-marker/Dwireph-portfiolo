@@ -23,9 +23,10 @@ const IS_VERCEL = process.env.VERCEL === "1";
 
 function getExpectedOrigin(req: express.Request): string | null {
   const configured = process.env.APP_ORIGIN?.trim().replace(/\/$/, "");
-  if (configured) return configured;
   const host = req.get("host");
   if (!host) return null;
+  if (IS_VERCEL) return `https://${host}`;
+  if (configured) return configured;
   const protocol = IS_PRODUCTION ? "https" : req.protocol;
   return `${protocol}://${host}`;
 }
