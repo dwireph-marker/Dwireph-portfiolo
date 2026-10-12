@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "firebase:rules": "firebase deploy --only firestore:rules,firestore:indexes",
     "firebase:migrate": "tsx scripts/migrate-firebase.ts",
-    "build:vercel": "git lfs pull && vite build"
+    "build:vercel": "git config lfs.url https://github.com/dwireph-marker/Dwireph-portfiolo.git/info/lfs && git lfs pull && vite build"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
