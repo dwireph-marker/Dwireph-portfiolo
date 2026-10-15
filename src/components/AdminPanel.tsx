@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { AdminLogin } from "./admin/AdminLogin";
 import { AdminHeader } from "./admin/AdminHeader";
 import { AdminSidebar, AdminTabId } from "./admin/AdminSidebar";
@@ -17,13 +23,22 @@ import { SettingsTab } from "./admin/tabs/SettingsTab";
 import { BackupLogsTab } from "./admin/tabs/BackupLogsTab";
 import { AccountTab } from "./admin/tabs/AccountTab";
 import { cmsApi } from "../services/cmsApi";
-import { WebsiteSettings, WebsiteContent, ContactSubmission, AuditLogEntry } from "../types/cms";
+import {
+  WebsiteSettings,
+  WebsiteContent,
+  ContactSubmission,
+  AuditLogEntry,
+} from "../types/cms";
 import { ProjectItem } from "../types/project";
 import { Loader2, X } from "lucide-react";
 import { useCMS } from "../context/CMSContext";
 
 export default function AdminPanel() {
-  const { settings: cmsSettings, content: cmsContent, projects: cmsProjects } = useCMS();
+  const {
+    settings: cmsSettings,
+    content: cmsContent,
+    projects: cmsProjects,
+  } = useCMS();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -50,12 +65,17 @@ export default function AdminPanel() {
     security: "account",
   };
 
-  const routeSegment = location.pathname.replace(/^\/admin\/?/, "").split("/")[0] || "projects";
+  const routeSegment =
+    location.pathname.replace(/^\/admin\/?/, "").split("/")[0] || "projects";
   const activeTab: AdminTabId = routeToTab[routeSegment] || "projects";
 
   // Data State
-  const [settings, setSettings] = useState<WebsiteSettings>(cmsSettings as WebsiteSettings);
-  const [content, setContent] = useState<WebsiteContent>(cmsContent as WebsiteContent);
+  const [settings, setSettings] = useState<WebsiteSettings>(
+    cmsSettings as WebsiteSettings,
+  );
+  const [content, setContent] = useState<WebsiteContent>(
+    cmsContent as WebsiteContent,
+  );
   const [projects, setProjects] = useState<ProjectItem[]>(cmsProjects);
   const [messages, setMessages] = useState<ContactSubmission[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([]);
@@ -68,11 +88,18 @@ export default function AdminPanel() {
   } | null>(null);
 
   // Modal Media Picker Callback
-  const [mediaPickerCallback, setMediaPickerCallback] = useState<((url: string) => void) | null>(
-    null
-  );
+  const [mediaPickerCallback, setMediaPickerCallback] = useState<
+    ((url: string) => void) | null
+  >(null);
 
-  const showStatus = (text: string, type: "success" | "error" | "info" = "success") => {
+  const handleOpenMediaPicker = (onSelect: (url: string) => void) => {
+    setMediaPickerCallback(() => onSelect);
+  };
+
+  const showStatus = (
+    text: string,
+    type: "success" | "error" | "info" = "success",
+  ) => {
     setStatusMessage({ type, text });
     setTimeout(() => setStatusMessage(null), 4000);
   };
@@ -157,7 +184,9 @@ export default function AdminPanel() {
     return (
       <div className="min-h-screen w-full bg-[#0d0a14] flex flex-col items-center justify-center text-white gap-3 font-sans">
         <Loader2 size={32} className="text-[#a855f7] animate-spin" />
-        <span className="text-sm font-medium text-[#c2a4ff]">Connecting to Secure Admin Console...</span>
+        <span className="text-sm font-medium text-[#c2a4ff]">
+          Connecting to Secure Admin Console...
+        </span>
       </div>
     );
   }
@@ -201,28 +230,117 @@ export default function AdminPanel() {
         {/* Content Workspace Canvas */}
         <main className="flex-1 p-4 lg:p-8 overflow-y-auto bg-[#0d0a14]">
           <Routes>
-            <Route index element={<Navigate to="projects" replace />} />
-            <Route path="hero" element={
-              <HeroEditorTab content={content} onSave={handleSaveContent} onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)} />
-            } />
-            <Route path="about" element={<AboutEditorTab content={content} onSave={handleSaveContent} />} />
-            <Route path="skills-services" element={<ServicesEditorTab content={content} onSave={handleSaveContent} />} />
-            <Route path="projects" element={
-              <ProjectsEditorTab key="projects-route" projects={projects} onRefresh={loadAllData} onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)} initialTab="projects" />
-            } />
-            <Route path="edited-videos" element={
-              <ProjectsEditorTab key="videos-route" projects={projects} onRefresh={loadAllData} onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)} initialTab="videos" />
-            } />
-            <Route path="experience" element={<CareerEditorTab content={content} onSave={handleSaveContent} />} />
-            <Route path="contact" element={<ContactEditorTab content={content} onSave={handleSaveContent} />} />
-            <Route path="social-links" element={<SocialLinksTab content={content} onSave={handleSaveContent} />} />
+            <Route index element={<Navigate to="/admin/projects" replace />} />
+            <Route
+              path="hero"
+              element={
+                <HeroEditorTab
+                  content={content}
+                  onSave={handleSaveContent}
+                  onOpenMediaPicker={handleOpenMediaPicker}
+                />
+              }
+            />
+            <Route
+              path="about"
+              element={
+                <AboutEditorTab content={content} onSave={handleSaveContent} />
+              }
+            />
+            <Route
+              path="skills-services"
+              element={
+                <ServicesEditorTab
+                  content={content}
+                  onSave={handleSaveContent}
+                />
+              }
+            />
+            <Route
+              path="projects"
+              element={
+                <ProjectsEditorTab
+                  key="projects-route"
+                  projects={projects}
+                  onRefresh={loadAllData}
+                  onOpenMediaPicker={handleOpenMediaPicker}
+                  initialTab="projects"
+                />
+              }
+            />
+            <Route
+              path="edited-videos"
+              element={
+                <ProjectsEditorTab
+                  key="videos-route"
+                  projects={projects}
+                  onRefresh={loadAllData}
+                  onOpenMediaPicker={handleOpenMediaPicker}
+                  initialTab="videos"
+                />
+              }
+            />
+            <Route
+              path="experience"
+              element={
+                <CareerEditorTab content={content} onSave={handleSaveContent} />
+              }
+            />
+            <Route
+              path="contact"
+              element={
+                <ContactEditorTab
+                  content={content}
+                  onSave={handleSaveContent}
+                />
+              }
+            />
+            <Route
+              path="social-links"
+              element={
+                <SocialLinksTab content={content} onSave={handleSaveContent} />
+              }
+            />
             <Route path="media-library" element={<MediaLibraryTab />} />
-            <Route path="messages" element={<MessagesTab messages={messages} onRefresh={loadAllData} />} />
-            <Route path="navigation" element={<NavigationEditorTab settings={settings} onSave={handleSaveSettings} />} />
-            <Route path="seo-settings" element={<SettingsTab settings={settings} onSave={handleSaveSettings} onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)} />} />
-            <Route path="backup-logs" element={<BackupLogsTab logs={auditLogs} onRefreshAll={loadAllData} />} />
-            <Route path="security" element={<AccountTab adminEmail={adminEmail} />} />
-            <Route path="*" element={<Navigate to="projects" replace />} />
+            <Route
+              path="messages"
+              element={
+                <MessagesTab messages={messages} onRefresh={loadAllData} />
+              }
+            />
+            <Route
+              path="navigation"
+              element={
+                <NavigationEditorTab
+                  settings={settings}
+                  onSave={handleSaveSettings}
+                />
+              }
+            />
+            <Route
+              path="seo-settings"
+              element={
+                <SettingsTab
+                  settings={settings}
+                  onSave={handleSaveSettings}
+                  onOpenMediaPicker={(cb) => setMediaPickerCallback(() => cb)}
+                />
+              }
+            />
+            <Route
+              path="backup-logs"
+              element={
+                <BackupLogsTab logs={auditLogs} onRefreshAll={loadAllData} />
+              }
+            />
+            <Route
+              path="security"
+              element={<AccountTab adminEmail={adminEmail} />}
+            />
+            <Route
+              path="*"
+              element={<Navigate to="/admin/projects" replace />}
+            />
           </Routes>
         </main>
       </div>
@@ -232,7 +350,9 @@ export default function AdminPanel() {
         <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-[#140f25] border border-[#302450] rounded-2xl w-full max-w-4xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-[#261d3e] mb-4">
-              <h3 className="text-base font-bold text-white">Select Asset from Media Library</h3>
+              <h3 className="text-base font-bold text-white">
+                Select Asset from Media Library
+              </h3>
               <button
                 type="button"
                 onClick={() => setMediaPickerCallback(null)}

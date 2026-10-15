@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import type { SyntheticEvent } from "react";
 import {
   Play,
@@ -46,9 +52,10 @@ export default function WorkMedia({ project }: WorkMediaProps) {
   const mediaList = useMemo(() => getProjectMediaList(project), [project]);
   const currentMedia = mediaList[currentIndex] || mediaList[0];
   const currentMediaUrl = currentMedia?.url || "";
-  const playbackUrl = isEditedVideoWork(project) && currentMedia?.mediaType === "video"
-    ? getVideoPlaybackUrl(currentMediaUrl)
-    : currentMediaUrl;
+  const playbackUrl =
+    isEditedVideoWork(project) && currentMedia?.mediaType === "video"
+      ? getVideoPlaybackUrl(currentMediaUrl)
+      : currentMediaUrl;
   const currentMediaId = currentMedia?.id || "media_0";
 
   // ONLY treat as video if this is an edited video work item AND has a direct video URL
@@ -163,22 +170,32 @@ export default function WorkMedia({ project }: WorkMediaProps) {
     setIsMuted(nextMuted);
   }, []);
 
-  const [videoDims, setVideoDims] = useState<{ width: number; height: number } | null>(null);
+  const [videoDims, setVideoDims] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
   const [startFullscreen, setStartFullscreen] = useState(false);
 
-  const handleOpenLightbox = useCallback((e: SyntheticEvent, asFullscreen = false) => {
-    e.stopPropagation();
-    const video = videoRef.current;
-    if (video) {
-      if (video.videoWidth && video.videoHeight) {
-        setVideoDims({ width: video.videoWidth, height: video.videoHeight });
+  const handleOpenLightbox = useCallback(
+    (e: SyntheticEvent, asFullscreen = false) => {
+      e.stopPropagation();
+      const video = videoRef.current;
+      if (video) {
+        if (video.videoWidth && video.videoHeight) {
+          setVideoDims({ width: video.videoWidth, height: video.videoHeight });
+        }
+        if (!video.paused) {
+          video.pause();
+        }
       }
-      if (!video.paused) {
-        video.pause();
-      }
-    }
-    setStartFullscreen(asFullscreen);
-    setLightboxOpen(true);
+      setStartFullscreen(asFullscreen);
+      setLightboxOpen(true);
+    },
+    [],
+  );
+
+  const handleLightboxIndexChange = useCallback((index: number) => {
+    setCurrentIndex(index);
   }, []);
 
   const handleError = (mediaId: string) => {
@@ -223,7 +240,9 @@ export default function WorkMedia({ project }: WorkMediaProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="work-link z-20"
-              onClick={(e: SyntheticEvent<HTMLAnchorElement>) => e.stopPropagation()}
+              onClick={(e: SyntheticEvent<HTMLAnchorElement>) =>
+                e.stopPropagation()
+              }
               data-cursor="disable"
               title="Visit Live Site"
             >
@@ -237,7 +256,9 @@ export default function WorkMedia({ project }: WorkMediaProps) {
               {isDirectVideo ? (
                 <>
                   <Film size={32} className="text-[#a855f7] mb-2 opacity-70" />
-                  <p className="text-xs text-[#eae5ec] font-semibold">{project.title}</p>
+                  <p className="text-xs text-[#eae5ec] font-semibold">
+                    {project.title}
+                  </p>
                   <span className="text-[10px] text-[#8a81a3] font-mono mt-1">
                     Video playback unavailable
                   </span>
@@ -266,8 +287,12 @@ export default function WorkMedia({ project }: WorkMediaProps) {
                 </>
               ) : (
                 <>
-                  <p className="text-xs text-[#eae5ec] font-semibold">{project.title}</p>
-                  <span className="text-[10px] text-[#8a81a3] font-mono mt-1">Image preview</span>
+                  <p className="text-xs text-[#eae5ec] font-semibold">
+                    {project.title}
+                  </p>
+                  <span className="text-[10px] text-[#8a81a3] font-mono mt-1">
+                    Image preview
+                  </span>
                 </>
               )}
             </div>
@@ -354,7 +379,10 @@ export default function WorkMedia({ project }: WorkMediaProps) {
                   className="p-2 rounded-xl bg-black/75 hover:bg-black/90 backdrop-blur-md border border-white/15 text-white shadow-xl hover:scale-105 transition cursor-pointer group/exp"
                   title="Expand to Fullscreen Theater (Uploaded Ratio)"
                 >
-                  <Maximize2 size={14} className="group-hover/exp:scale-110 transition-transform" />
+                  <Maximize2
+                    size={14}
+                    className="group-hover/exp:scale-110 transition-transform"
+                  />
                 </button>
               </div>
 
@@ -396,7 +424,9 @@ export default function WorkMedia({ project }: WorkMediaProps) {
                   </span>
                 </div>
 
-                <h4 className="text-white font-bold text-sm line-clamp-1">{project.title}</h4>
+                <h4 className="text-white font-bold text-sm line-clamp-1">
+                  {project.title}
+                </h4>
 
                 {(currentMedia?.url || project.link) && (
                   <a
@@ -458,7 +488,7 @@ export default function WorkMedia({ project }: WorkMediaProps) {
               video.play().catch(() => {});
             }
           }}
-          onIndexChange={(idx: number) => setCurrentIndex(idx)}
+          onIndexChange={handleLightboxIndexChange}
         />
       )}
     </>
