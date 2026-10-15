@@ -1,16 +1,51 @@
 import React, { useState } from "react";
-import { User, Save, RotateCcw, Plus, Trash2 } from "lucide-react";
+import {
+  User,
+  Save,
+  RotateCcw,
+  Plus,
+  Trash2,
+  Upload,
+  FileText,
+  ExternalLink,
+} from "lucide-react";
 import { WebsiteContent, AboutStatItem } from "../../../types/cms";
+import { mediaStorage } from "../../../services/mediaStorage";
 
 interface AboutEditorTabProps {
   content: WebsiteContent;
   onSave: (updated: WebsiteContent) => Promise<void>;
 }
 
-export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({ content, onSave }) => {
+export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({
+  content,
+  onSave,
+}) => {
   const [about, setAbout] = useState(content.about);
+  const [resumeUrl, setResumeUrl] = useState(content.hero.ctaResumeUrl);
   const [newBadge, setNewBadge] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingResume, setIsUploadingResume] = useState(false);
+  const [resumeUploadError, setResumeUploadError] = useState("");
+
+  const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    e.currentTarget.value = "";
+    if (!file) return;
+
+    setIsUploadingResume(true);
+    setResumeUploadError("");
+    try {
+      const uploadedUrl = await mediaStorage.uploadResume(file);
+      setResumeUrl(uploadedUrl);
+    } catch (error) {
+      setResumeUploadError(
+        error instanceof Error ? error.message : "Resume upload failed.",
+      );
+    } finally {
+      setIsUploadingResume(false);
+    }
+  };
 
   const handleAddBadge = () => {
     if (!newBadge.trim()) return;
@@ -28,7 +63,11 @@ export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({ content, onSave 
     }));
   };
 
-  const handleStatChange = (index: number, field: keyof AboutStatItem, value: string) => {
+  const handleStatChange = (
+    index: number,
+    field: keyof AboutStatItem,
+    value: string,
+  ) => {
     const updatedStats = [...about.stats];
     updatedStats[index] = { ...updatedStats[index], [field]: value };
     setAbout({ ...about, stats: updatedStats });
@@ -37,15 +76,24 @@ export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({ content, onSave 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    await onSave({
-      ...content,
-      about,
-    });
-    setIsSaving(false);
+    try {
+      await onSave({
+        ...content,
+        about,
+        hero: {
+          ...content.hero,
+          ctaResumeUrl: resumeUrl,
+        },
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleReset = () => {
     setAbout(content.about);
+    setResumeUrl(content.hero.ctaResumeUrl);
+    setResumeUploadError("");
   };
 
   return (
@@ -58,7 +106,8 @@ export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({ content, onSave 
             <span>About Me Section</span>
           </h2>
           <p className="text-xs text-[#9d8bb8] mt-1">
-            Update your biography, personal pitch, expertise badges, and metric highlights.
+            Update your biography, personal pitch, expertise badges, and metric
+            highlights.
           </p>
         </div>
         <div className="flex items-center gap-2.5">
@@ -103,7 +152,9 @@ export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({ content, onSave 
           </label>
           <textarea
             value={about.leadParagraph}
-            onChange={(e) => setAbout({ ...about, leadParagraph: e.target.value })}
+            onChange={(e) =>
+              setAbout({ ...about, leadParagraph: e.target.value })
+            }
             rows={2}
             placeholder="I design, develop, and edit experiences that people remember."
             className="w-full bg-[#110d1f] border border-[#2e254a] rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-[#a855f7] transition-all"
@@ -116,7 +167,9 @@ export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({ content, onSave 
           </label>
           <textarea
             value={about.subParagraph1}
-            onChange={(e) => setAbout({ ...about, subParagraph1: e.target.value })}
+            onChange={(e) =>
+              setAbout({ ...about, subParagraph1: e.target.value })
+            }
             rows={3}
             className="w-full bg-[#110d1f] border border-[#2e254a] rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-[#a855f7] transition-all"
           />
@@ -128,10 +181,64 @@ export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({ content, onSave 
           </label>
           <textarea
             value={about.subParagraph2}
-            onChange={(e) => setAbout({ ...about, subParagraph2: e.target.value })}
+            onChange={(e) =>
+              setAbout({ ...about, subParagraph2: e.target.value })
+            }
             rows={3}
             className="w-full bg-[#110d1f] border border-[#2e254a] rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-[#a855f7] transition-all"
           />
+        </div>
+
+        <div className="rounded-xl border border-[#271e3f] bg-[#140f24] p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <FileText size={16} className="text-[#c2a4ff]" />
+            <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+              Resume Download
+            </h3>
+          </div>
+          <label className="block text-xs font-medium text-[#9d8bb8]">
+            Resume file URL
+          </label>
+          <input
+            type="url"
+            value={resumeUrl}
+            onChange={(e) => setResumeUrl(e.target.value)}
+            placeholder="https://.../resume.pdf"
+            className="w-full bg-[#0d0a17] border border-[#2b2245] rounded-lg px-3 py-2 text-xs text-white"
+          />
+          <div className="flex flex-wrap items-center gap-3">
+            <label className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#2b2149] hover:bg-[#3a2d61] text-xs font-medium text-white cursor-pointer">
+              <Upload size={13} />
+              <span>{isUploadingResume ? "Uploading..." : "Upload PDF"}</span>
+              <input
+                type="file"
+                accept="application/pdf,.pdf"
+                onChange={handleResumeUpload}
+                disabled={isUploadingResume || isSaving}
+                className="sr-only"
+              />
+            </label>
+            {resumeUrl && (
+              <a
+                href={resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-[#c2a4ff] hover:text-white"
+              >
+                <ExternalLink size={12} />
+                <span>Preview current resume</span>
+              </a>
+            )}
+          </div>
+          <p className="text-[11px] text-[#8f7ca8]">
+            Upload a PDF or edit its URL, then save About changes to update the
+            main download button.
+          </p>
+          {resumeUploadError && (
+            <p role="alert" className="text-xs text-red-300">
+              {resumeUploadError}
+            </p>
+          )}
         </div>
 
         {/* Badges */}
@@ -193,10 +300,14 @@ export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({ content, onSave 
                 className="p-3.5 bg-[#140f24] border border-[#271e3f] rounded-xl space-y-2.5"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-semibold text-[#8f7ca8]">Card #{idx + 1}</span>
+                  <span className="text-[11px] font-semibold text-[#8f7ca8]">
+                    Card #{idx + 1}
+                  </span>
                   <select
                     value={stat.glow}
-                    onChange={(e) => handleStatChange(idx, "glow", e.target.value)}
+                    onChange={(e) =>
+                      handleStatChange(idx, "glow", e.target.value)
+                    }
                     className="bg-[#0e0a17] border border-[#2a2143] rounded-md px-2 py-0.5 text-[11px] text-[#baa9d2]"
                   >
                     <option value="amber">Amber Glow</option>
@@ -207,21 +318,29 @@ export const AboutEditorTab: React.FC<AboutEditorTabProps> = ({ content, onSave 
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="col-span-1">
-                    <label className="block text-[10px] text-[#75648d] mb-1">Value</label>
+                    <label className="block text-[10px] text-[#75648d] mb-1">
+                      Value
+                    </label>
                     <input
                       type="text"
                       value={stat.number}
-                      onChange={(e) => handleStatChange(idx, "number", e.target.value)}
+                      onChange={(e) =>
+                        handleStatChange(idx, "number", e.target.value)
+                      }
                       placeholder="2+"
                       className="w-full bg-[#0d0a17] border border-[#2b2245] rounded-lg px-2.5 py-1.5 text-xs text-white font-bold"
                     />
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-[10px] text-[#75648d] mb-1">Label</label>
+                    <label className="block text-[10px] text-[#75648d] mb-1">
+                      Label
+                    </label>
                     <input
                       type="text"
                       value={stat.label}
-                      onChange={(e) => handleStatChange(idx, "label", e.target.value)}
+                      onChange={(e) =>
+                        handleStatChange(idx, "label", e.target.value)
+                      }
                       placeholder="Years of Experience"
                       className="w-full bg-[#0d0a17] border border-[#2b2245] rounded-lg px-2.5 py-1.5 text-xs text-white"
                     />
